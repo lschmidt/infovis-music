@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Demo: Long bar chart</title>
+		<script type="text/javascript" src="d3/d3.v2.js"></script>
+		<style type="text/css">
+		
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;	/* Gets overriden by D3-assigned height below */
+				margin-right: 2px;
+				background-color: teal;
+			}
+			
+			.chart rect {
+				stroke: white;
+				fill: steelblue;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+		
+			var length = [4, 8, 15, 16, 23, 42];
+			var height = [30, 10, 2, 20, 5, 15];
+			 
+			var chart = d3.select("body").append("svg")
+				.attr("class", "chart")
+				.attr("width", 420)
+				.attr("height", 35 * length.length)
+				.attr("id", "right");
+				
+			var x = d3.scale.linear()
+				.domain([0, d3.max(length)])
+				.range([0, 420]);
+
+			chart.selectAll("rect")
+				.data(length)
+				.enter().append("rect")
+				.attr("y", function(d, i) { return i * 35; })
+				.attr("width", x)
+				.attr("height", function(d, i) {return height[i];})
+				.append("title")
+				.text("Height");
+				
+			
+							
+			
+		</script>
+	</body>
+</html>

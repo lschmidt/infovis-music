@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Bar Chart with Negative Values</title>
+<style>
+
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: brown;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var dataR = [15, 20, 22, 18, 2, 6, 26, 18];
+var dataL = [5, 22, 6, 12, 14, 16, 6, 10];
+
+var dataText = ["tag", "tag", "tag", "tag", "tag", "tag", "tag", "tag"];
+
+var heightR = [15, 20, 22, 18, 2, 6, 26, 18];
+var heightL = [5, 22, 6, 12, 14, 16, 6, 10];
+
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x0 = Math.max(-d3.min(dataR), d3.max(dataR));
+
+var x = d3.scale.linear()
+    .domain([-x0, x0])
+    .range([0, width])
+    .nice();
+
+var y = d3.scale.ordinal()
+    .domain(d3.range(dataR.length))
+    .rangeRoundBands([0, height], .2);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("top");
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.selectAll(".bar.positive")
+    .data(dataR)
+  .enter().append("rect")
+    .attr("class", function(d) { return "bar positive"; })
+    .attr("x", function(d) { return x(0); })
+    .attr("y", function(d, i) { return y(i); })
+    .attr("width", function(d) { return Math.abs(x(d) - x(0)); })
+    .attr("height", function(d, i) { return heightR[i]; })
+	
+svg.selectAll(".bar.negative")
+    .data(dataL)
+	.enter().append("rect")
+    .attr("class", function(d) { return "bar negative"; })
+    .attr("x", function(d) { return x(-d); })
+    .attr("y", function(d, i) { return y(i); })
+    .attr("width", function(d) { return Math.abs(x(d) - x(0)); })
+    .attr("height", function(d, i) { return heightL[i]; })
+	
+
+	svg.selectAll("text")
+		.data(dataText)
+		.enter().append("text")
+		.attr("x", function(d) { return x(0);})
+		.attr("y", function(d, i) { return y(i) + y.rangeBand() / 2; })
+		.attr("dx", -3) // padding-right
+		.attr("dy", ".35em") // vertical-align: middle
+		.attr("text-anchor", "end") // text-align: right
+		.text(String);
+
+svg.append("g")
+    .attr("class", "x axis")
+    .call(xAxis);
+
+svg.append("g")
+    .attr("class", "y axis")
+  .append("line")
+    .attr("x1", x(0))
+    .attr("x2", x(0))
+    .attr("y1", 0)
+    .attr("y2", height);
+
+</script>
