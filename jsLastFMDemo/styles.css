@@ -1,0 +1,45 @@
+ html, body {
+   margin: 0;
+ }
+ #leftcol {
+   float: left;
+   width: 250px;
+  /* border: #000 1px solid;*/
+ }
+ #main {
+   margin: 0px;
+ }
+ #centercol {
+   /*border: #f00 1px solid;*/
+   margin: 0 260px 0 260px;
+ }
+ #rightcol {
+   float: right;
+   width: 250px;
+    /* border: #000 1px solid;*/
+ }
+ #footer {
+   text-align: center;
+   border: #fc0 1px solid;
+ }
+ #footerbr { clear: both; } 
+ 
+ 
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: tomato;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

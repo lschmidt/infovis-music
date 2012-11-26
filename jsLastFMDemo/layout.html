@@ -1,66 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Bar Chart with Negative Values</title>
-<style>
-
-.bar.positive {
-  fill: steelblue;
-}
-
-.bar.negative {
-  fill: brown;
-}
-
-.axis text {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-#left {
-  margin-right: 153px;
-}
-#right {
-  margin-left: 150px;
-}
-
-#bottom {
-	width: 100%;
-	position:absolute;
-	float:top;
-}
-
-#left_wrapper {
-  width: 25%;
-  margin-right: -150px;
-  float: left;
-  position: relative;
-  z-index: 0;
-}
-
-#middle_wrapper {
-  width: 600px;
-  margin-right: -150px;
-  float: left;
-  position: relative;
-  z-index: 2;
-}
-
-#right_wrapper {
-  width: 24.9%;
-  float: left;
-  position: relative;
-  z-index: 1;
-}
-
-</style>
-<body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+ <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- load jquery and jsrender libraries -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jsrender.js"></script>
@@ -143,19 +84,19 @@ lastfm.artist.getTopTags({artist: artist2}, {success: function(data){
 	for (var k = 0; k < tagArray.length; k++) {
     for (var j = 0; j < tagArray2.length; j++) {
         if (tagArray[k].tagname == tagArray2[j].tagname) {
-			console.log("L count: " + tagArray[k].tagcount);
-			console.log("R count: " + tagArray2[j].tagcount);
+			console.log("L count: " + tagArray[j].tagcount);
+			console.log("R count: " + tagArray2[k].tagcount);
 			if(tagArray[k].tagcount > 0 && tagArray[j].tagcount > 0)
 			{
 			  similarArray.push(tagArray[k].tagname);
-			  rTagcount.push(tagArray[k].tagcount);
-			  lTagcount.push(tagArray2[j].tagcount);
+			  rTagcount.push(tagArray[j].tagcount);
+			  lTagcount.push(tagArray2[k].tagcount);
 			  
 			  
 			  
 			  console.log("Tag: " + tagArray[k].tagname);
-			  console.log("L count: " + tagArray[k].tagcount);
-			  console.log("R count: " + tagArray2[j].tagcount);
+			  console.log("L count: " + tagArray[j].tagcount);
+			  console.log("R count: " + tagArray2[k].tagcount);
 			}
         }
     }	
@@ -164,6 +105,10 @@ lastfm.artist.getTopTags({artist: artist2}, {success: function(data){
 console.log("similar: " + similarArray);
 
 drawEverything(similarArray, rTagcount, lTagcount);
+getArtist(artist1, "left");
+getArtist(artist2, "right");
+
+
 	
 }, error: function(code, message){
 	alert('Error #'+code+': '+message);
@@ -173,8 +118,48 @@ drawEverything(similarArray, rTagcount, lTagcount);
 
 }
 
+function getArtist(artistName, leftOrRight){
+   	    // Save Search Term
+        var artist = artistName;
+		
+		if(leftOrRight == "left")
+		{
+			var header = "h1Left";
+			var div = "#leftcol";
+		}
+		else
+		{
+			var header = "h1Right";
+			var div = "#rightcol";
+		}
+        
+        // Check if a value has been entered into the search
+        if(artist == ''){
+        	$(div).html("<h2 class='loading'>We Can't Find Related Artists Without an Artist! Enter One!</h2>");
+        } 
+        else {
+           
+            $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=6be25b22a1523c79be75513d30d14e99&limit=12&format=json&callback=?", function(data) {
+        		var html = '';
+        		//$.each(data.artist.url, function(i, item) {
+            		html += "<h1>" + data.artist.name + "</h1><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " '/></a> <br/>" +
+					data.artist.bio.summary;
+        		//}); // End each
+        		
+        		$(div).html("<ul class='clearfix'>" +html+ "</ul>");
+    		}); // End getJSON
+
+        } // End Else
+   		return false;
+   } // End getArtists
+
+
 function drawEverything(similarArray, rTagCount, lTagCount)
 {
+
+
+
+
 d3.select("svg")
        .remove();
 //var dataR = [15, 20, 22, 18, 2, 6, 26, 18];
@@ -187,15 +172,17 @@ var heightR = 20;
 //var heightL = [5, 22, 6, 12, 14, 16, 6, 10];
 var heightL = 20;
 
+var centerWidth = document.getElementById("centercol").offsetWidth;
+
 var margin = {top: 30, right: 10, bottom: 10, left: 10},
-    width = 600 - margin.left - margin.right,
+    width = centerWidth - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 	
 
 var x0 = Math.max(-d3.min(dataL), d3.max(dataL));
 
 var x = d3.scale.linear()
-    .domain([-100, 100])
+    .domain([-125, 125])
     .range([0, width])
     .nice();
 
@@ -206,9 +193,13 @@ var y = d3.scale.ordinal()
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("top");
+	
 
-var svg = d3.select(".middle").append("svg")
-    .attr("width", width + margin.left + margin.right)
+//width + margin.left + margin.right
+
+
+var svg = d3.select("#centercol").append("svg")
+    .attr("width", centerWidth + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -239,7 +230,7 @@ svg.selectAll(".bar.negative")
 		.enter().append("text")
 		.attr("x", function(d) { return x(0);})
 		.attr("y", function(d, i) { return y(i) + y.rangeBand() / 2; })
-		.attr("dx", -3) // padding-right
+		.attr("dx", -20) // padding-right
 		.attr("dy", ".35em") // vertical-align: middle
 		.attr("text-anchor", "end") // text-align: right
 		.text(String);
@@ -260,38 +251,37 @@ svg.append("g")
 }
 
 </script>
-
-<html>
- <div id="left_wrapper"> 
-    <div id="left" style="border:1px solid black"> 
-
-  
-
-	</div>
-  </div>
-  
-  <div id="middle_wrapper"> 
-    <div class="middle" style="border:1px solid black">
  
-    </div>
-  </div>
-  <div id="right_wrapper"> 
-    <div id="right" style="border:1px solid black">
-
-
-   </div>
-  </div>
-  
  
-  <footer>
-  <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ 
+ 	<head>
+ 		
+ 		<title>3 Column with Footer Layout Template</title>
+ 		<link href="styles.css" rel="stylesheet" type="text/css" />
+ 	</head>
+ 
+ 	<body>
+ 		<div id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
+ 		
+ 		</div>
+ 		<div id="main">
+ 			<div id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
+ 			<img id="imgRight"></img>
+ 			</div>
+ 			<div id="centercol"><center><h1>Tag Comparison</h1></center>
+ 			
+ 			</div>
+ 		</div>
+ 		<br id="footerbr" />
+ 		<div id="footer">
+		<h2><center>Other Views</center></h2>
+		  <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
 <input type="text" value ="Artist 2" id="artistInput2"><br>
 </form>
     <button name="goButton" onclick="compareArtists()">Compare Artists</button>
-	</footer>
-
-	
-</html>
-
-
-</body>
+		
+		</div>
+ 	</body>
+ 
+ </html> 
