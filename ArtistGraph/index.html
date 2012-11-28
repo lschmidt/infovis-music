@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Last.fm javascript API</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- load d3 -->
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+    
+    <!-- load jquery and jsrender libraries -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jsrender.js"></script>
+
+    <!-- and new libraries to use lastfm -->
+    <script type="text/javascript" src="js/lastfm.api.md5.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
+
+</head>
+<body>
+	<header>
+        <h2>Last.fm JS API practice</h2>
+    </header>
+    <div class="content-form">
+        <form id="submitter">
+        <input type="text" value ="Cher"/>
+        <input type="submit" value="Submit"/>
+        </form>
+    </div>
+	<script type="text/javascript" src="js/main.js"></script>
+        <div class="content-body">
+            <div id="chart">            
+                <div id="filterPanel" class="content-body-inner">
+                    
+                    <div id="artist-display" class="artist-display-slider">
+                        <p>Show Similar Artists:</p>
+                            <form id="artist-text-form">
+                                <input type="text" value="4"/> 
+                            </form> 
+                    </div>
+
+                
+                    <p>Filter By Tags:</p>
+                    <div class="content-filter-cloud" id="filterCloudDiv">
+                    </div>
+                    
+                    <div class="content-filter-in" id="filterInDiv">
+                        <p>Filter In Tags:</p>
+                        <form id="filter-in-form">
+                            <input type="checkbox" value="chc"/>
+                            <input type="text" value ="Tag to filter"/>
+                        </form> 
+                        <div id="filterInDivLabels">
+                        </div>
+                    </div>
+                    
+                    <div class="content-filter-out" id="filterOutDiv">
+                        <p> Filter Out Tags:</p>
+                        <form id="filter-out-form">
+                            <input type="checkbox" value="chc"/>
+                            <input type="text" value ="Tag to filter"/>
+                        </form>
+                        <div id="filterOutDivLabels">
+                        </div> 
+                    </div>
+                    
+                    <div class="content-filter-pop" id="filterPop">
+                        <p> Filter by Popularity: </p>
+                        Drops n most popular artists.
+                        <form id="filter-pop-form">
+                            <input type="text" value="0"/> Artists <br>
+                        </form> 
+                        By:<br>
+                        <div class="filter-pop-form-div" id = "subFilterPop">
+                            <form id="filter-pop-radio-form">
+                                <input type="radio" name="g1" class="radiob" value="Playcount"/> <label>Playcount</label> <br>
+                                <input type="radio" name="g1" class="radiob" value="Active Listeners" checked/> <label>Active Listeners</label>
+                            </form> 
+                        </div>
+
+                    </div>
+                    <!--<div class="content-filter-events" id="filterEvents">
+                        <p> Filter artists with upcoming events:
+                        <form id="eventRadio">
+                            Upcoming Events: <input type="checkbox" value="Events"/>
+                        </form> 
+                    </div>-->
+                </div>
+            </div>
+        </div>
+</body>
+</html>
