@@ -29,16 +29,35 @@ $(window).load(function() {
         apiSecret : apiSecret,
         cache     : cache
     });
+	
+	var query = window.location.search;
+  // Skip the leading ?, which should always be there,
+  // but be careful anyway
+  if (query.substring(0, 1) == '?') {
+    query = query.substring(1);
+  }
+  var data = query.split(',');
+  for (i = 0; (i < data.length); i++) {
+    data[i] = unescape(data[i]);
+  }
+  
+  //alert(data[0]);
+  
+  compareArtists(data[0], data[1]);
     
 });
 
-
-	
 
 function compareArtists()
 {
 	var artist1 = document.getElementById('artistInput1').value;
 	var artist2 = document.getElementById('artistInput2').value;
+	
+	compareArtists(artist1, artist2);
+}
+
+function compareArtists(artist1, artist2)
+{
 	
 	var tagArray = new Array();
 	var tagArray2 = new Array();
@@ -236,7 +255,7 @@ svg.selectAll(".bar.negative")
 		.text(String)
 		.on("click", function(){
     
-			alert(similarArray[i]);
+			//alert(similarArray[i]);
 		});
 
 svg.append("g")
