@@ -233,7 +233,11 @@ svg.selectAll(".bar.negative")
 		.attr("dx", -20) // padding-right
 		.attr("dy", ".35em") // vertical-align: middle
 		.attr("text-anchor", "end") // text-align: right
-		.text(String);
+		.text(String)
+		.on("click", function(){
+    
+			alert(similarArray[i]);
+		});
 
 svg.append("g")
     .attr("class", "x axis")

@@ -1,0 +1,18 @@
+//put this in javascript
+
+function sendData()
+{
+  // Initialize packed or we get the word 'undefined'
+  
+  var artist1 = //fill this in;
+  var artist2 = //fill this in;
+  
+  var delim = ",";
+  
+  window.location = "layout.html?" + artist1 + delim + artist2;
+}
+
+//put this into html
+
+
+<a href="javascript:sendData();">Go to Page Two</a>
