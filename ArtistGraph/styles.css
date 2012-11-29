@@ -10,7 +10,7 @@
     position:relative;
     width:100%;
     z-index:100; 
-    border-bottom: 2px solid #787878;
+    border-bottom: 1px solid #303030;
 }
 header h2{
     font-size:22px;
@@ -62,7 +62,7 @@ header h2{
 }
 
 .bar.negative {
-  fill: tomato;
+  fill: #C53533;
 }
 
 .axis text {
