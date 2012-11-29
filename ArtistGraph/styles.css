@@ -1,10 +1,36 @@
  html, body {
-   margin: 0;
+    background-color:#E3E3E3;
+    margin: 0;
  }
+ header {
+    background-color:#b70300;
+    color:#fff;
+    display:block;
+    height:70px;
+    position:relative;
+    width:100%;
+    z-index:100; 
+    border-bottom: 2px solid #787878;
+}
+header h2{
+    font-size:22px;
+    font-weight:normal;
+    position:absolute;
+    margin-left: 100px;
+}
  #leftcol {
-   float: left;
-   width: 250px;
-  /* border: #000 1px solid;*/
+    background-color: #FAFAFA;
+    border: 1px solid #404040;
+    float: left;
+    width: 250px;
+  }
+ .leftcol h1 {
+    font-size: 20px;
+ }
+ .clearfix{
+    margin-left: -20px;
+    margin-right: 20px;
+    font-size: 13px;
  }
  #main {
    margin: 0px;
@@ -14,15 +40,21 @@
    margin: 0 260px 0 260px;
  }
  #rightcol {
-   float: right;
-   width: 250px;
-    /* border: #000 1px solid;*/
+    background-color: #FAFAFA;
+    border: 1px solid #404040;
+    float: right;
+    width: 250px;
+ }
+.rightcol h1 {
+    font-size: 20px;
  }
  #footer {
    text-align: center;
-   border: #fc0 1px solid;
+   border-top: 1px solid #C8C8C8;
+   /*border: #fc0 1px solid;*/
  }
  #footerbr { clear: both; } 
+ 
  
  
 .bar.positive {

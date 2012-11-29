@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Bar Chart with Negative Values</title>
+<title>Artist Comparison</title>
  <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- load jquery and jsrender libraries -->
     <script type="text/javascript" src="js/jquery.js"></script>
@@ -280,21 +280,20 @@ svg.append("g")
  <html xmlns="http://www.w3.org/1999/xhtml">
  
  	<head>
- 		
  		<title>3 Column with Footer Layout Template</title>
  		<link href="styles.css" rel="stylesheet" type="text/css" />
  	</head>
- 
+    <header>
+        <h2>Artist Comparison By Genre</h2>
+    </header>
  	<body>
- 		<div id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
- 		
- 		</div>
  		<div id="main">
- 			<div id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
- 			<img id="imgRight"></img>
+            <div class="leftcol" id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
+            </div>
+            <div class="rightcol" id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
+                <img id="imgRight"></img>
  			</div>
- 			<div id="centercol"><center><h1>Tag Comparison</h1></center>
- 			
+ 			<div class="centercol" id="centercol"><center><h1>Genre Comparison</h1></center>
  			</div>
  		</div>
  		<br id="footerbr" />
