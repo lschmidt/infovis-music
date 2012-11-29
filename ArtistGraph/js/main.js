@@ -436,6 +436,13 @@ $(window).load(function() {
         numDrawnArtists = c;
     }
 
+    function sendData(artist1, artist2){
+      // Initialize packed or we get the word 'undefined'      
+      var delim = ",";
+      window.location = "layout.html?" + artist1 + delim + artist2;
+    }
+
+
 	$('#submitter').submit(function() {
         var jsonGraph = {}; 
         var listy = [];
@@ -458,7 +465,8 @@ $(window).load(function() {
                 
                 //make a call to the comparison screen!
                 d3.selectAll("line.link").on("click", function(d) {
-                    console.log(d.source +"---"+ d.target)
+                    console.log(d.source.name +"---"+ d.target.name)
+                    sendData(d.source.name, d.target.name);
                 })
                 
                 //delete filtered items

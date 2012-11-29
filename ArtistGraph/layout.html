@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Bar Chart with Negative Values</title>
+ <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- load jquery and jsrender libraries -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jsrender.js"></script>
+
+    <!-- and new libraries to use lastfm -->
+    <script type="text/javascript" src="js/lastfm.api.md5.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
+<script>
+
+var lastfm;
+
+$(window).load(function() {
+
+    // define api keys
+    var apiKey = 'fa1830abafe042c4a5a8a49d9f966288';
+    var apiSecret = '6296e2516b3980a5e884dc037336766d';
+ 
+    // create a Cache object
+    var cache = new LastFMCache();
+
+    // create a LastFM object
+    lastfm = new LastFM({
+        apiKey    : apiKey,
+        apiSecret : apiSecret,
+        cache     : cache
+    });
+	
+	var query = window.location.search;
+  // Skip the leading ?, which should always be there,
+  // but be careful anyway
+  if (query.substring(0, 1) == '?') {
+    query = query.substring(1);
+  }
+  var data = query.split(',');
+  for (i = 0; (i < data.length); i++) {
+    data[i] = unescape(data[i]);
+  }
+  
+  //alert(data[1]);
+  
+  compareArtists(data[0], data[1]);
+    
+});
+
+
+function compareArtists()
+{
+	var artist1 = document.getElementById('artistInput1').value;
+	var artist2 = document.getElementById('artistInput2').value;
+	
+	compareArtists(artist1, artist2);
+}
+
+function compareArtists(artist1, artist2)
+{
+	
+	var tagArray = new Array();
+	var tagArray2 = new Array();
+	var similarArray = new Array();
+	var rTagcount = new Array();
+	var lTagcount = new Array();
+
+lastfm.artist.getTopTags({artist: artist1}, {success: function(datai){
+	 $('#log').append(datai)
+	var tags = datai.toptags.tag;
+	//tagArray = new Array();
+	for(var i=0; i < tags.length; i++)
+	{
+		tagObject = {tagname:tags[i].name, tagcount: tags[i].count}
+		tagArray.push(tagObject);
+	}
+	
+	console.log("in 1");
+	console.log(tagArray.length);
+	console.log(tagArray2.length);
+	
+    lastfm.artist.getTopTags({artist: artist2}, {success: function(data){
+         $('#log').append(data)
+        var tags = data.toptags.tag;
+        //tagArray2 = new Array();
+        for(var i=0; i < tags.length; i++)
+        {
+            tagObject = {tagname:tags[i].name, tagcount: tags[i].count}
+            tagArray2.push(tagObject);
+        }
+        console.log("in 2");
+        console.log(tagArray.length);
+        console.log(tagArray2.length);
+        
+        
+        
+        for (var k = 0; k < tagArray.length; k++) {
+            for (var j = 0; j < tagArray2.length; j++) {
+                if (tagArray[k].tagname == tagArray2[j].tagname) {
+                    console.log("L count: " + tagArray[j].tagcount);
+                    console.log("R count: " + tagArray2[k].tagcount);
+                    if(tagArray[k].tagcount > 0 && tagArray[j].tagcount > 0)
+                    {
+                      similarArray.push(tagArray[k].tagname);
+                      rTagcount.push(tagArray[j].tagcount);
+                      lTagcount.push(tagArray2[k].tagcount);
+                      
+                      
+                      
+                      console.log("Tag: " + tagArray[k].tagname);
+                      console.log("L count: " + tagArray[j].tagcount);
+                      console.log("R count: " + tagArray2[k].tagcount);
+                    }
+                }
+            }	
+        }
+
+                             
+        console.log("similar: " + similarArray);
+
+        drawEverything(similarArray, rTagcount, lTagcount);
+        getArtist(artist1, "left");
+        getArtist(artist2, "right");
+
+    //I moved this down below the secondary query, so that the data from the first would 
+    //be guaranteed to be received by the time the second query is made, if this breaks
+    //something let me know -R
+    }, error: function(code, message){
+        alert('Error #'+code+': '+message);
+        /* Show error message. */
+    }});
+}, error: function(code, message){
+	alert('Error #'+code+': '+message);
+	/* Show error message. */
+}});
+
+
+}
+
+function getArtist(artistName, leftOrRight){
+   	    // Save Search Term
+        var artist = artistName;
+        
+		if(leftOrRight == "left")
+		{
+			var header = "h1Left";
+			var div = "#leftcol";
+		}
+		else
+		{
+			var header = "h1Right";
+			var div = "#rightcol";
+		}
+        
+        // Check if a value has been entered into the search
+        if(artist == ''){
+        	$(div).html("<h2 class='loading'>We Can't Find Related Artists Without an Artist! Enter One!</h2>");
+        } 
+        else {
+            $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(artist) + "&api_key=6be25b22a1523c79be75513d30d14e99&limit=12&format=json&callback=?", function(data) {
+                console.log(encodeURI(artist))
+        		var html = '';
+                console.log(data.artist.name)
+        		//$.each(data.artist.url, function(i, item) {
+            		html += "<h1>" + data.artist.name + "</h1><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " '/></a> <br/>" +
+					data.artist.bio.summary;
+        		//}); // End each
+        		
+        		$(div).html("<ul class='clearfix'>" +html+ "</ul>");
+    		}); // End getJSON
+
+        } // End Else
+   		return false;
+   } // End getArtists
+
+
+function drawEverything(similarArray, rTagCount, lTagCount)
+{
+
+
+
+
+d3.select("svg")
+       .remove();
+//var dataR = [15, 20, 22, 18, 2, 6, 26, 18];
+var dataR = rTagCount;
+//var dataL = [5, 22, 6, 12, 14, 16, 6, 10];
+var dataL = lTagCount;
+
+//var heightR = [15, 20, 22, 18, 2, 6, 26, 18];
+var heightR = 20;
+//var heightL = [5, 22, 6, 12, 14, 16, 6, 10];
+var heightL = 20;
+
+var centerWidth = document.getElementById("centercol").offsetWidth;
+
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = centerWidth - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+	
+
+var x0 = Math.max(-d3.min(dataL), d3.max(dataL));
+
+var x = d3.scale.linear()
+    .domain([-125, 125])
+    .range([0, width])
+    .nice();
+
+var y = d3.scale.ordinal()
+    .domain(d3.range(dataR.length))
+    .rangeRoundBands([0, height], .2);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("top");
+	
+
+//width + margin.left + margin.right
+
+
+var svg = d3.select("#centercol").append("svg")
+    .attr("width", centerWidth + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+svg.selectAll(".bar.positive")
+    .data(dataR)
+  .enter().append("rect")
+    .attr("class", function(d) { return "bar positive"; })
+    .attr("x", function(d) { return x(0); })
+    .attr("y", function(d, i) { return y(i); })
+    .attr("width", function(d) { return Math.abs(x(d) - x(0)); })
+    .attr("height", function(d, i) { return heightR; })
+	
+svg.selectAll(".bar.negative")
+    .data(dataL)
+	.enter().append("rect")
+    .attr("class", function(d) { return "bar negative"; })
+    .attr("x", function(d) { return x(-d); })
+    .attr("y", function(d, i) { return y(i); })
+    .attr("width", function(d) { return Math.abs(x(d) - x(0)); })
+    .attr("height", function(d, i) { return heightL; })
+	
+
+	svg.selectAll("text")
+		.data(similarArray)
+		.enter().append("text")
+		.attr("x", function(d) { return x(0);})
+		.attr("y", function(d, i) { return y(i) + y.rangeBand() / 2; })
+		.attr("dx", -20) // padding-right
+		.attr("dy", ".35em") // vertical-align: middle
+		.attr("text-anchor", "end") // text-align: right
+		.text(String)
+		.on("click", function(){
+    
+			//alert(similarArray[i]);
+		});
+
+svg.append("g")
+    .attr("class", "x axis")
+    .call(xAxis);
+
+svg.append("g")
+    .attr("class", "y axis")
+  .append("line")
+    .attr("x1", x(0))
+    .attr("x2", x(0))
+    .attr("y1", 0)
+    .attr("y2", height);
+	
+
+}
+
+</script>
+ 
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ 
+ 	<head>
+ 		
+ 		<title>3 Column with Footer Layout Template</title>
+ 		<link href="styles.css" rel="stylesheet" type="text/css" />
+ 	</head>
+ 
+ 	<body>
+ 		<div id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
+ 		
+ 		</div>
+ 		<div id="main">
+ 			<div id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
+ 			<img id="imgRight"></img>
+ 			</div>
+ 			<div id="centercol"><center><h1>Tag Comparison</h1></center>
+ 			
+ 			</div>
+ 		</div>
+ 		<br id="footerbr" />
+ 		<div id="footer">
+		<h2><center>Other Views</center></h2>
+		  <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
+<input type="text" value ="Artist 2" id="artistInput2"><br>
+</form>
+    <button name="goButton" onclick="compareArtists()">Compare Artists</button>
+		
+		</div>
+ 	</body>
+ 
+ </html> 
