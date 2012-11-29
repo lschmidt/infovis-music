@@ -172,7 +172,7 @@ $(window).load(function() {
 		.enter().append("line")
 		.attr("opacity", 0.8)
 		.attr("class", "link")
-		.style("stroke-width", function(d) { return Math.sqrt(10*d.value); });      
+		.style("stroke-width", function(d) { return Math.sqrt(30*d.value); });      
 		
 		var node = svg.selectAll("circle.node")
 		.data(jsonGraph.nodes)
@@ -237,7 +237,7 @@ $(window).load(function() {
 	    svg.selectAll("line.link")
 			.data(updatedJsonGraph.links)
 			.transition()
-			.style("stroke-width", function(d) { return Math.sqrt(10*d.value);})      
+			.style("stroke-width", function(d) { return Math.sqrt(30*d.value);})      
 			.duration(500);
 
 	
