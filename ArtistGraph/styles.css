@@ -69,17 +69,24 @@ header h2{
   font: 10px sans-serif;
 }
 #footer .leftfootercol {
+	text-align: center;
     float: left;
     border: 1px solid black;
+	
+
 }
 #footer .rightfootercol {
+	text-align: center;
     float: right;
     border: 1px solid black;
+	
 }
 #footer .centerfootercol {
     text-align: center;
     border: 1px solid black;
-    width:200px;
+    
+	margin-right: auto;
+	margin-left: auto;
 }
 
 
