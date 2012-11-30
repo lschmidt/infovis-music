@@ -49,9 +49,9 @@ header h2{
     font-size: 20px;
  }
  #footer {
-   text-align: center;
    border-top: 1px solid #C8C8C8;
-   /*border: #fc0 1px solid;*/
+   /*text-align: center;
+      border: #fc0 1px solid;*/
  }
  #footerbr { clear: both; } 
  
@@ -68,6 +68,20 @@ header h2{
 .axis text {
   font: 10px sans-serif;
 }
+#footer .leftfootercol {
+    float: left;
+    border: 1px solid black;
+}
+#footer .rightfootercol {
+    float: right;
+    border: 1px solid black;
+}
+#footer .centerfootercol {
+    text-align: center;
+    border: 1px solid black;
+    width:200px;
+}
+
 
 .axis path,
 .axis line {
