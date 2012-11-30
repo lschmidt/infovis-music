@@ -397,6 +397,7 @@ $(window).load(function() {
                 globalArtistSupp = data1;
                 //Filter the users
                 refilterGraph(name, artistData2, data1);
+                //make a call to the comparison screen!
                 callback();
             });
         }}); //get similar+transition
@@ -433,7 +434,50 @@ $(window).load(function() {
             svg.selectAll("text.tnode").remove();
             drawGraph(jsonGraph1);
         }
+        runListeners();
         numDrawnArtists = c;
+    }
+    function runListeners(){
+        d3.selectAll("line.link").on("click", function(d) {
+                    console.log(d.source.name +"---"+ d.target.name)
+                    sendData(d.source.name, d.target.name);
+        })
+        //delete filtered items
+        svgFilterIn.selectAll("text.tnode").on("click", function (d){
+            ind = filterInList.indexOf(d);
+            filterInList = filterInList.slice(0,ind).concat(filterInList.slice(ind+1, filterInList.length));
+            updateFilterIn(0);
+        });
+        
+        //delete filtered items
+        svgFilterOut.selectAll("text.tnode").on("click", function (d){
+            ind = filterOutList.indexOf(d);
+            filterOutList = filterOutList.slice(0,ind).concat(filterOutList.slice(ind+1, filterOutList.length));
+            updateFilterOut(0);
+        });
+        
+        //check box activation for filter in                    
+        $("#filter-in-form input:checkbox").change(function(){
+            if($(this).attr('checked')){filterInFlag=1; console.log('Filtering In');}
+            else{filterInFlag=0;resetArtistViability();console.log('!Filtering In');}
+            refilterGraph(globalName, globalArtistData, globalArtistSupp);
+            return false;
+        });
+        
+        //check box activation for filter out
+        $("#filter-out-form input:checkbox").change(function(){
+            if($(this).attr('checked')){filterOutFlag=1; console.log('Filtering Out');}
+            else{filterOutFlag=0;resetArtistViability();console.log('!Filtering Out');}
+            refilterGraph(globalName, globalArtistData, globalArtistSupp);
+            return false;
+        }); 
+        
+        d3.selectAll("circle.node").on("click", function(node) {
+            updateTagCloud(node.name, tagCloudLimit, firstRun);
+            globalName = node.name;
+            rebuildGraph(node.name, function() {return false;});
+        });//node click
+
     }
 
     function sendData(artist1, artist2){
@@ -459,54 +503,7 @@ $(window).load(function() {
             globalName = artistInput; 
             updateTagCloud(artistInput, tagCloudLimit, firstRun);
                         
-            rebuildGraph(artistInput, function (){
-                
-                
-                
-                //make a call to the comparison screen!
-                d3.selectAll("line.link").on("click", function(d) {
-                    console.log(d.source.name +"---"+ d.target.name)
-                    sendData(d.source.name, d.target.name);
-                })
-                
-                //delete filtered items
-                svgFilterIn.selectAll("text.tnode").on("click", function (d){
-                    ind = filterInList.indexOf(d);
-                    filterInList = filterInList.slice(0,ind).concat(filterInList.slice(ind+1, filterInList.length));
-                    updateFilterIn(0);
-                });
-                
-                //delete filtered items
-                svgFilterOut.selectAll("text.tnode").on("click", function (d){
-                    ind = filterOutList.indexOf(d);
-                    filterOutList = filterOutList.slice(0,ind).concat(filterOutList.slice(ind+1, filterOutList.length));
-                    updateFilterOut(0);
-                });
-                
-                //check box activation for filter in                    
-                $("#filter-in-form input:checkbox").change(function(){
-                    if($(this).attr('checked')){filterInFlag=1; console.log('Filtering In');}
-                    else{filterInFlag=0;resetArtistViability();console.log('!Filtering In');}
-                    refilterGraph(globalName, globalArtistData, globalArtistSupp);
-                    return false;
-                });
-                
-                //check box activation for filter out
-                $("#filter-out-form input:checkbox").change(function(){
-                    if($(this).attr('checked')){filterOutFlag=1; console.log('Filtering Out');}
-                    else{filterOutFlag=0;resetArtistViability();console.log('!Filtering Out');}
-                    refilterGraph(globalName, globalArtistData, globalArtistSupp);
-                    return false;
-                }); 
-                
-                d3.selectAll("circle.node").on("click", function(node) {
-                    updateTagCloud(node.name, tagCloudLimit, firstRun);
-                    globalName = node.name;
-                    rebuildGraph(node.name, function() {return false;});
-                });//node click
-                
-                return false;
-            });
+            rebuildGraph(artistInput, function (){return false;});
             //THESE NEEDS TO BE MOVED DOWN DERRRRRP        
                 //}); //filterevents call
             //});
