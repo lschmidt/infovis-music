@@ -28,7 +28,7 @@
 
         // define top artist name
         topArtistName = data.weeklyartistchart.artist[0].name;
-		
+
     }});
 });
 });

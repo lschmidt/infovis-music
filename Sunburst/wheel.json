@@ -1,0 +1,95 @@
+[
+
+  {
+   "name": "2012",
+   "children": [
+    {
+     "name": "Jan",
+     "children": [
+      {"name": "AgglomerativeCluster", "size": 1},
+      {"name": "CommunityStructure", "size": 1},
+      {"name": "HierarchicalCluster", "size": 1},
+      {"name": "MergeEdge", "size": 1}
+     ]
+    },
+    {
+     "name": "Feb",
+     "children": [
+      {"name": "BetweennessCentrality", "size": 1},
+      {"name": "LinkDistance", "size": 1},
+      {"name": "MaxFlowMinCut", "size": 1},
+      {"name": "ShortestPaths", "size": 1},
+      {"name": "SpanningTree", "size": 1}
+     ]
+    },
+    {
+     "name": "Jun",
+     "children": [
+      {"name": "AspectRatioBanker", "size": 1}
+     ]
+    }
+   ]
+  },
+   {
+   "name": "2011",
+   "children": [
+    {
+     "name": "May",
+     "children": [
+      {"name": "AgglomerativeCluster", "size": 1},
+      {"name": "CommunityStructure", "size": 1},
+      {"name": "HierarchicalCluster", "size": 1},
+      {"name": "MergeEdge", "size": 1}
+     ]
+    },
+    {
+     "name": "Sep",
+     "children": [
+      {"name": "BetweennessCentrality", "size": 1},
+      {"name": "LinkDistance", "size": 1},
+      {"name": "MaxFlowMinCut", "size": 1},
+      {"name": "ShortestPaths", "size": 1},
+      {"name": "SpanningTree", "size": 1}
+     ]
+    },
+    {
+     "name": "Jun",
+     "children": [
+      {"name": "AspectRatioBanker", "size": 1}
+     ]
+    }
+   ]
+  },
+   {
+   "name": "2010",
+   "children": [
+    {
+     "name": "Jan",
+     "children": [
+      {"name": "AgglomerativeCluster", "size": 1},
+      {"name": "CommunityStructure", "size": 1},
+      {"name": "HierarchicalCluster", "size": 1},
+      {"name": "MergeEdge", "size": 1}
+     ]
+    },
+    {
+     "name": "Feb",
+     "children": [
+      {"name": "BetweennessCentrality", "size": 1},
+      {"name": "LinkDistance", "size": 1},
+      {"name": "MaxFlowMinCut", "size": 1},
+      {"name": "ShortestPaths", "size": 1},
+      {"name": "SpanningTree", "size": 1}
+     ]
+    },
+    {
+     "name": "Jun",
+     "children": [
+      {"name": "AspectRatioBanker", "size": 1}
+     ]
+    }
+   ]
+  }
+  
+ ]
+

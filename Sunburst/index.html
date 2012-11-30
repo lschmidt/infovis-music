@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Last.fm javascript API</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+	<link href="wheel.css" rel="stylesheet">
+
+    <!-- load d3 -->
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+    
+    <!-- load jquery and jsrender libraries -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jsrender.js"></script>
+
+    <!-- and new libraries to use lastfm -->
+    <script type="text/javascript" src="js/lastfm.api.md5.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
+
+    <!-- define three templates for our units 
+    <script id="lastfmTemplateArtists" type="text/x-jsrender">
+        <div id="{{:mbid}}" class="artist">
+            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><b>{{:name}}:</b></a>
+        </div>
+    </script>-->
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+    <header>
+        <h2>Last.fm javascript API practice</h2>
+    </header>
+    <form name="inputForm"><input type="text" value ="trance" name="tagInput"><br></form>
+    <button name="goButton"> Run the thing</button>
+        <div class="content-body">
+            <h2>Top artists</h2>
+            <div class="content-body-inner" id="vis"></div>
+        </div>
+</body>
+</html>
