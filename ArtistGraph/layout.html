@@ -41,14 +41,12 @@ $(window).load(function() {
     data[i] = unescape(data[i]);
   }
   
-  //alert(data[1]);
-  
   compareArtists(data[0], data[1]);
     
 });
 
 
-function compareArtists()
+function getArtists()
 {
 	var artist1 = document.getElementById('artistInput1').value;
 	var artist2 = document.getElementById('artistInput2').value;
@@ -58,6 +56,9 @@ function compareArtists()
 
 function compareArtists(artist1, artist2)
 {
+	$("artistInput2").val(artist1).change();
+	$("artistInput2").val(artist1).change();
+
 	
 	var tagArray = new Array();
 	var tagArray2 = new Array();
@@ -302,7 +303,7 @@ svg.append("g")
 		  <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
 <input type="text" value ="Artist 2" id="artistInput2"><br>
 </form>
-    <button name="goButton" onclick="compareArtists()">Compare Artists</button>
+    <button name="goButton" onclick="getArtists()">Compare Artists</button>
 		
 		</div>
  	</body>
