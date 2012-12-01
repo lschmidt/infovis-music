@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Last.fm javascript API</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- load d3 -->
+    <script type="text/javascript" src="d3/d3.v2.js"></script>
+    
+    <!-- load jquery and jsrender libraries -->
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jsrender.js"></script>
+
+    <!-- and new libraries to use lastfm -->
+    <script type="text/javascript" src="js/lastfm.api.md5.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.js"></script>
+    <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
+
+    <!-- define three templates for our units -->
+    <script id="lastfmTemplateArtists" type="text/x-jsrender">
+        <div id="{{:mbid}}" class="artist2">
+            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
+        </div>
+    </script>
+	
+	 <script id="lastfmTemplateArtists2" type="text/x-jsrender">
+        <div id="{{:mbid}}" class="artist2">
+            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
+        </div>
+    </script>
+    
+	<script type="text/javascript" src="js/mainTopAlbumsView.js"></script>
+	<style>
+	#main{
+	margin:0px
+	}
+	</style>
+
+</head>
+
+<body>
+    <header>
+        <h2 align="center">Top Albums</h2>
+    </header>
+
+    <form name="inputForm"><input type="text" value ="Cher" name="artistInput">
+	<input type="text" value ="Pink Floyd" name="artistInput2"></form>
+	<button name="goButton"> Go > </button>
+	
+	<div id="container">	
+		
+            <div class="content-body-inner" id="top_artists" style="float:left;margin-left:400px"></div>
+			<div class="content-body-inner2" id="top_artists2" style="float:right;margin-right:400px"></div>
+		
+	</div>
+</body>
+</html>
