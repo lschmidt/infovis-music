@@ -44,12 +44,12 @@ $(window).load(function() {
   compareArtists(data[0], data[1]);
   
   //change html on sunburst blocks
-  sunburst(data[0], "left");
-  sunburst(data[1], "right");
+  sunburst(data[0], data[1], "left");
+  sunburst(data[1], data[0], "right");
     
 });
 
-function sunburst(artistName, leftOrRight)
+function sunburst(artistName, artistOther, leftOrRight)
 {
  var artist = artistName;
         
@@ -64,7 +64,7 @@ function sunburst(artistName, leftOrRight)
         
         // Check if a value has been entered into the search
         
-        $(div).html("Calendar of Events<br><a href='../Sunburst/index.html?" + artist + "'><img src='wheel.png' alt='Sunburst'></a>");
+        $(div).html("Calendar of Past Events for: " + artist + "<br><a href='../Sunburst/index.html?" + artist + "," + artistOther + "'><img src='wheel.png' alt='Sunburst'></a>");
 
 }
 
