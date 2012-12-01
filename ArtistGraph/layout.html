@@ -42,8 +42,31 @@ $(window).load(function() {
   }
   
   compareArtists(data[0], data[1]);
+  
+  //change html on sunburst blocks
+  sunburst(data[0], "left");
+  sunburst(data[1], "right");
     
 });
+
+function sunburst(artistName, leftOrRight)
+{
+ var artist = artistName;
+        
+		if(leftOrRight == "left")
+		{
+			var div = "#leftfootercol";
+		}
+		else
+		{
+			var div = "#rightfootercol";
+		}
+        
+        // Check if a value has been entered into the search
+        
+        $(div).html("Calendar of Events<br><a href='../Sunburst/index.html?" + artist + "'><img src='wheel.png' alt='Sunburst'></a>");
+
+}
 
 
 function getArtists()
@@ -137,6 +160,12 @@ lastfm.artist.getTopTags({artist: artist1}, {success: function(datai){
 
 
 }
+
+function sendData(artist1){
+      // Initialize packed or we get the word 'undefined'      
+      var delim = ",";
+      window.location = "layout.html?" + artist1;
+    }
 
 function getArtist(artistName, leftOrRight){
    	    // Save Search Term
@@ -310,7 +339,7 @@ svg.append("g")
 			
 			
 			
-            <div class="rightfootercol" id="leftfootercol">
+            <div class="rightfootercol" id="rightfootercol">
 			Calendar of Events<br>
                 <a href="../Sunburst/index.html">
                     <img src="wheel.png" alt="Sunburst">
