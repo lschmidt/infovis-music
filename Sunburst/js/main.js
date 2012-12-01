@@ -26,15 +26,15 @@ var lastfm;
     data[i] = unescape(data[i]);
   }
    
-  drawSunburst();
-  getArtist("cher","left");
+  drawSunburst(data[0]);
+  getArtist(data[0],"left");
    });
-     function drawSunburst() {
+     function drawSunburst(artistName) {
     var topArtistName = '';
     //var tagName = document.forms["inputForm"].elements["tagInput"].value;
     
     // get weekly artist chart by tag 'trance'
-    lastfm.artist.getPastEvents({artist: "cher"}, {success: function(data){
+    lastfm.artist.getPastEvents({artist: artistName}, {success: function(data){
 
         // render top weekly artist using 'lastfmTemplateArtists' template
        // $('#top_artists').html(
