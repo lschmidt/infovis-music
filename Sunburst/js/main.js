@@ -1,4 +1,5 @@
 // on page load
+var lastfm;
  $(window).load(function() {
 
     // define api keys
@@ -9,17 +10,31 @@
     var cache = new LastFMCache();
 
     // create a LastFM object
-    var lastfm = new LastFM({
+     lastfm = new LastFM({
         apiKey    : apiKey,
         apiSecret : apiSecret,
         cache     : cache
     });
-    d3.select("button").on("click", function() {
+	var query = window.location.search;
+  // Skip the leading ?, which should always be there,
+  // but be careful anyway
+  if (query.substring(0, 1) == '?') {
+    query = query.substring(1);
+  }
+  var data = query.split(',');
+  for (i = 0; (i < data.length); i++) {
+    data[i] = unescape(data[i]);
+  }
+   
+  drawSunburst();
+  getArtist("cher","left");
+   });
+     function drawSunburst() {
     var topArtistName = '';
-    var tagName = document.forms["inputForm"].elements["tagInput"].value;
+    //var tagName = document.forms["inputForm"].elements["tagInput"].value;
     
     // get weekly artist chart by tag 'trance'
-    lastfm.artist.getPastEvents({artist: tagName}, {success: function(data){
+    lastfm.artist.getPastEvents({artist: "cher"}, {success: function(data){
 
         // render top weekly artist using 'lastfmTemplateArtists' template
        // $('#top_artists').html(
@@ -81,6 +96,7 @@ pastEventsArray.push({name:Object.keys(test)[j],children:yearEvents});
 			}
 var pastEventsJson = {"children":pastEventsArray};
 
+
 var width = 840,
     height = width,
     radius = width / 2,
@@ -89,7 +105,7 @@ var width = 840,
     padding = 5,
     duration = 1000;
 
-var div = d3.select("#vis");
+var div = d3.select("#centercol");
 
 div.select("img").remove();
 
@@ -229,5 +245,39 @@ function brightness(rgb) {
 }
     }});
 	
-});
-});
+}
+function getArtist(artistName, leftOrRight){
+   	    // Save Search Term
+        var artist = artistName;
+        
+		if(leftOrRight == "left")
+		{
+			var header = "h1Left";
+			var div = "#leftcol";
+		}
+		else
+		{
+			var header = "h1Right";
+			var div = "#rightcol";
+		}
+        
+        // Check if a value has been entered into the search
+        if(artist == ''){
+        	$(div).html("<h2 class='loading'>We Can't Find Related Artists Without an Artist! Enter One!</h2>");
+        } 
+        else {
+            $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(artist) + "&api_key=6be25b22a1523c79be75513d30d14e99&limit=12&format=json&callback=?", function(data) {
+                console.log(encodeURI(artist))
+        		var html = '';
+                console.log(data.artist.name)
+        		//$.each(data.artist.url, function(i, item) {
+            		html += "<h1>" + data.artist.name + "</h1><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " '/></a> <br/>" +
+					data.artist.bio.summary;
+        		//}); // End each
+        		
+        		$(div).html("<ul class='clearfix'>" +html+ "</ul>");
+    		}); // End getJSON
+
+        } // End Else
+   		return false;
+   } // End getArtists

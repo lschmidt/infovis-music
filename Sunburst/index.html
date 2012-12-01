@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Last.fm javascript API</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />
+<meta charset="utf-8">
+<title>Bar Chart with Negative Values</title>
+ <link href="styles.css" rel="stylesheet" type="text/css" />
 	<link href="wheel.css" rel="stylesheet">
-
-    <!-- load d3 -->
-    <script type="text/javascript" src="d3/d3.v2.js"></script>
-    
+ <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- load jquery and jsrender libraries -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jsrender.js"></script>
@@ -17,24 +12,48 @@
     <script type="text/javascript" src="js/lastfm.api.md5.js"></script>
     <script type="text/javascript" src="js/lastfm.api.js"></script>
     <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
-
-    <!-- define three templates for our units 
-    <script id="lastfmTemplateArtists" type="text/x-jsrender">
-        <div id="{{:mbid}}" class="artist">
-            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><b>{{:name}}:</b></a>
-        </div>
-    </script>-->
     <script type="text/javascript" src="js/main.js"></script>
-</head>
-<body>
-    <header>
-        <h2>Last.fm javascript API practice</h2>
+
+ 
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ 
+ 	<head>
+ 		
+ 		<title>3 Column with Footer Layout Template</title>
+ 		<link href="styles.css" rel="stylesheet" type="text/css" />
+ 	</head>
+ <header>
+        <h2>Artist Comparison By Genre</h2>
     </header>
-    <form name="inputForm"><input type="text" value ="trance" name="tagInput"><br></form>
-    <button name="goButton"> Run the thing</button>
-        <div class="content-body">
-            <h2>Top artists</h2>
-            <div class="content-body-inner" id="vis"></div>
+ 	<body>
+
+ 		<div id="main">
+            <div class="leftcol" id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
+            </div>
+ 			<div class="centercol" id="centercol"><center><h1>Sunburst Calender for Past Events</h1></center>
+ 			</div>
+ 		</div>
+ 		<br id="footerbr" />
+		<div id="footer">
+            <div class="leftfootercol" id="leftfootercol">
+                <a href="../Sunburst/index.html">
+                    <img src="wheel.png" alt="Sunburst">
+                </a>
+            </div>
+            <div class="rightfootercol" id="leftfootercol">
+                <a href="../Sunburst/index.html">
+                    <img src="wheel.png" alt="Sunburst">
+                </a>
+            </div>
+            <div class="centerfootercol" id="centerfootercol">centercol
+                <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
+                    <input type="text" value ="Artist 2" id="artistInput2"><br>
+                </form>
+                <button name="goButton" onclick="getArtists()">Compare Artists</button>
+            </div>
         </div>
-</body>
-</html>
+		
+		</div>
+ 	</body>
+ 
+ </html> 
