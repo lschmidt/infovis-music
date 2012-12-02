@@ -24,6 +24,16 @@ header h2{
     float: left;
     width: 250px;
   }
+  
+.legendcol {
+    background-color: #FAFAFA;
+    border: 1px solid #404040;
+    float: left;
+    width: 250px;
+}
+ .legendcol h1 {
+    font-size: 20px;
+ }
  .leftcol h1 {
     font-size: 20px;
  }
@@ -87,6 +97,18 @@ header h2{
     
 	margin-right: auto;
 	margin-left: auto;
+}
+.EventSty {
+   text-align: center;
+    color: #A64100;
+}
+.VenueSty{
+   text-align: center;
+    color: #0F4DA8;
+}
+.CitySty{
+   text-align: center;
+    color: #34D800;
 }
 
 

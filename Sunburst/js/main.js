@@ -61,7 +61,7 @@ if (typeof(test[year]) === "undefined")
 test[year]=new Array();
 //test[year].push(month);
 test[year][month] = new Array();
-test[year][month]["Event name: "+data.events.event[i].title + "/" +"Venue Name: "+ data.events.event[i].venue.name + "/"+"City: " + data.events.event[i].venue.location.city] = new Array();
+test[year][month][data.events.event[i].title + "/"+ data.events.event[i].venue.name + "/"+ data.events.event[i].venue.location.city] = new Array();
 //test[year][month].push(data.events.event[i].title);
 }
 
@@ -70,7 +70,7 @@ else
 if(typeof(test[year][month]) === "undefined")
 //test[year].push(month);
 test[year][month] = new Array();
-test[year][month]["Event name: "+data.events.event[i].title + "/" +"Venue Name: "+ data.events.event[i].venue.name + "/"+"City: " + data.events.event[i].venue.location.city] = new Array();
+test[year][month][data.events.event[i].title + "/"+ data.events.event[i].venue.name + "/" + data.events.event[i].venue.location.city] = new Array();
 //test[year][month].push(data.events.event[i].title);
 }
 
@@ -159,17 +159,19 @@ var arc = d3.svg.arc()
       .on("click", click);
   textEnter.append("tspan")
       .attr("x", 0)
-	  .attr("dy", "1em")
-      .text(function(d) { return d.depth ? d.name.split("/")[0] : ""; });
+	  .attr("dy", "0em")
+      .attr("fill", function(d){return (d.depth < 3) ? "black" : "#A64100"})
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 23) : ""; });
  textEnter.append("tspan")
       .attr("x", 0)
-      .attr("dy", "2em")
-      .text(function(d) { return d.depth ? d.name.split("/")[1] || "" : ""; });
+      .attr("dy", "1em")
+      .attr("fill", "#0F4DA8")
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 23) || "" : ""; });
   textEnter.append("tspan")
       .attr("x", 0)
-      .attr("dy", "3em")
-      .text(function(d) { return d.depth ? d.name.split("/")[2] || "" : ""; });
-
+      .attr("dy", "1em")
+      .attr("fill", "#34D800")
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 23) || "" : ""; });
 
   function click(d) {
     path.transition()
@@ -199,8 +201,35 @@ var arc = d3.svg.arc()
         .each("end", function(e) {
           d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
         });
+    
+        //adjustNameLength(textEnter);
   }
 ;
+
+function nameTooLong(depth, inputStr, strLen){
+    if(depth >= 3){
+        if(inputStr.length > strLen){
+            return inputStr.slice(0,strLen);
+        }else{return inputStr;}
+    }else{
+        return inputStr;
+    }
+}
+
+function  adjustNameLength(tobj){
+       tspans = tobj.select("tspan")[0];
+       console.log(tobj[0]);
+       datas = tobj[0]
+       for (var i = 0; i < tobj[0].length; i++){
+            console.log(datas[i]);
+            console.log(datas[i].visibility)
+           // console.log(tspans[i].getAttribute("textContent"))
+            if(tspans[i].name){
+                splitted = d.name.split("/");
+                d.name = nameTooLong(d.depth, splitted[0], 23) +"/"+ nameTooLong(d.depth, splitted[1], 23)+"/"+  nameTooLong(d.depth, splitted[2], 23);
+            }
+        }
+}
 
 function isParentOf(p, c) {
   if (p === c) return true;
