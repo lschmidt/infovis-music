@@ -46,8 +46,16 @@ $(window).load(function() {
   //change html on sunburst blocks
   sunburst(data[0], data[1], "left");
   sunburst(data[1], data[0], "right");
+  graphComparison(data[0], data[1]);
     
 });
+
+function graphComparison(artistName, artist2Name)
+{
+	var div = "#centerfootercol2";
+	$(div).html("Graph Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+
+}
 
 function sunburst(artistName, artistOther, leftOrRight)
 {
@@ -346,12 +354,24 @@ svg.append("g")
                 </a>
             </div>
 			
+			<div class="centerfootercol" id="centerfootercol2">Graph Comparison
+                <br>
+                <a href="../ArtistGraph/layout.html">
+                    <img src="bargraph.png" alt="Double Bar Graph">
+                </a>
+            </div>
+			
 			 <div class="centerfootercol" id="centerfootercol">Pick New Artists!
                 <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
                     <input type="text" value ="Artist 2" id="artistInput2"><br>
                 </form>
                 <button name="goButton" onclick="getArtists()">Compare Artists</button>
+				
             </div>
+			
+			
+			
+			
            
         </div>
 

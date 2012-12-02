@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Sunburst of Events</title>
- <link href="styles.css" rel="stylesheet" type="text/css" />
+ <link href="../ArtistGraph/styles.css" rel="stylesheet" type="text/css" />
 	<link href="wheel.css" rel="stylesheet">
  <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- load jquery and jsrender libraries -->
@@ -46,17 +46,27 @@
                     <img src="wheel.png" alt="Sunburst">
                 </a>
             </div>
-            <div class="rightfootercol" id="leftfootercol">
+            <div class="rightfootercol" id="rightfootercol">
                 <a href="../Sunburst/index.html">
                     <img src="wheel.png" alt="Sunburst">
                 </a>
             </div>
+			
+			<div class="centerfootercol" id="centerfootercol2">Graph Comparison
+                <br>
+                <a href="../ArtistGraph/layout.html">
+                    <img src="../ArtistGraph/bargraph.png" alt="Double Bar Graph">
+                </a>
+            </div>
+			
             <div class="centerfootercol" id="centerfootercol">centercol
                 <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
                     <input type="text" value ="Artist 2" id="artistInput2"><br>
                 </form>
                 <button name="goButton" onclick="getArtists()">Compare Artists</button>
             </div>
+			
+
         </div>
 		
 		</div>

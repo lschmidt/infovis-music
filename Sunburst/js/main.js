@@ -28,7 +28,42 @@ var lastfm;
    
   drawSunburst(data[0]);
   getArtist(data[0],"left");
-   });
+    
+  //change html on sunburst blocks
+  sunburst(data[0], data[1], "left");
+  sunburst(data[1], data[0], "right");
+  graphComparison(data[0], data[1]);
+    
+});
+
+function graphComparison(artistName, artist2Name)
+{
+	var div = "#centerfootercol2";
+	$(div).html("Graph Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+
+}
+   
+function sunburst(artistName, artistOther, leftOrRight)
+{
+ var artist = artistName;
+        
+		if(leftOrRight == "left")
+		{
+			var div = "#leftfootercol";
+		}
+		else
+		{
+			var div = "#rightfootercol";
+		}
+        
+        // Check if a value has been entered into the search
+        
+        $(div).html("Calendar of Past Events for: " + artist + "<br><a href='../Sunburst/index.html?" + artist + "," + artistOther + "'><img src='wheel.png' alt='Sunburst'></a>");
+
+}
+   
+   
+   
      function drawSunburst(artistName) {
     var topArtistName = '';
     //var tagName = document.forms["inputForm"].elements["tagInput"].value;

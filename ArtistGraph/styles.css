@@ -84,9 +84,13 @@ header h2{
 #footer .centerfootercol {
     text-align: center;
     border: 1px solid black;
-    
-	margin-right: auto;
-	margin-left: auto;
+	display: inline-block;
+}
+
+#footer .centerfootercol2 {
+    text-align: center;
+    border: 1px solid black;
+	display: inline-block;
 }
 
 
