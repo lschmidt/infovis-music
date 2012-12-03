@@ -41,6 +41,9 @@ $(window).load(function() {
     data[i] = decodeURIComponent(data[i]);
   }
   
+ $('input[name=artist1]').val(data[0]);
+  $('input[name=artist2]').val(data[1]);
+  
   compareArtists(data[0], data[1]);
   
   //change html on sunburst blocks
@@ -87,10 +90,17 @@ function getArtists()
 {
 	var artist1 = document.getElementById('artistInput1').value;
 	var artist2 = document.getElementById('artistInput2').value;
-	
-	compareArtists(artist1, artist2);
+
+	refreshData(artist1, artist2);
+	//compareArtists(artist1, artist2);
 }
 
+function refreshData(artist1, artist2){
+
+      // Initialize packed or we get the word 'undefined'      
+      var delim = ",";
+      window.location = "layout.html?" + artist1 + delim + artist2;
+    }
 function compareArtists(artist1, artist2)
 {
 	$("artistInput2").val(artist1).change();
@@ -328,6 +338,13 @@ svg.append("g")
     </header>
  	<body>
  		<div id="main">
+		<div class="topcenter" id="topcenter">
+            <input type="text" name="artist1" value ="" id="artistInput1">
+                <button name="goButton" onclick="getArtists()">Compare New Artists</button>
+			<input type="text" name="artist2" value ="" id="artistInput2">
+               
+        </div>
+		
             <div class="leftcol" id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
             </div>
             <div class="rightcol" id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
@@ -369,12 +386,7 @@ svg.append("g")
                     <img src="artistGraph.jpg" alt="Double Bar Graph">
                 </a>
             </div>
-			 <div class="centerfootercol" id="centerfootercol">Pick New Artists!
-                <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
-                    <input type="text" value ="Artist 2" id="artistInput2"><br>
-                </form>
-                <button name="goButton" onclick="getArtists()">Compare Artists</button>
-            </div>
+			 
         </div>
  	</body>
  </html> 

@@ -46,6 +46,14 @@ header h2{
     float: right;
     width: 250px;
  }
+ 
+ #topcenter {
+    margin: 10px 10px 10px 10px;
+    text-align: center;
+   /* border: 1px solid black;*/
+	
+}
+ 
 .rightcol h1 {
     font-size: 20px;
  }
