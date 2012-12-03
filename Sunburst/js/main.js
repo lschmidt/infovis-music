@@ -192,21 +192,28 @@ var arc = d3.svg.arc()
         return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
       })
       .on("click", click);
-  textEnter.append("tspan")
+      
+var act = textEnter.append("tspan")
+    .attr("id", "EvEvent")
+    .attr("title", d.name)
       .attr("x", 0)
 	  .attr("dy", "0em")
       .attr("fill", function(d){return (d.depth < 3) ? "black" : "#A64100"})
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 23) : ""; });
- textEnter.append("tspan")
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 22) : ""; });
+      
+var venue = textEnter.append("tspan")
+    .attr("id", "EvVenue")
       .attr("x", 0)
       .attr("dy", "1em")
       .attr("fill", "#0F4DA8")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 23) || "" : ""; });
-  textEnter.append("tspan")
-      .attr("x", 0)
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 22) || "" : ""; });
+
+var loc =  textEnter.append("tspan")
+    .attr("id", "EvLocation")
+    .attr("x", 0)
       .attr("dy", "1em")
       .attr("fill", "#34D800")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 23) || "" : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 22) || "" : ""; });
 
   function click(d) {
     path.transition()
@@ -236,8 +243,6 @@ var arc = d3.svg.arc()
         .each("end", function(e) {
           d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
         });
-    
-        //adjustNameLength(textEnter);
   }
 ;
 
@@ -249,21 +254,6 @@ function nameTooLong(depth, inputStr, strLen){
     }else{
         return inputStr;
     }
-}
-
-function  adjustNameLength(tobj){
-       tspans = tobj.select("tspan")[0];
-       console.log(tobj[0]);
-       datas = tobj[0]
-       for (var i = 0; i < tobj[0].length; i++){
-            console.log(datas[i]);
-            console.log(datas[i].visibility)
-           // console.log(tspans[i].getAttribute("textContent"))
-            if(tspans[i].name){
-                splitted = d.name.split("/");
-                d.name = nameTooLong(d.depth, splitted[0], 23) +"/"+ nameTooLong(d.depth, splitted[1], 23)+"/"+  nameTooLong(d.depth, splitted[2], 23);
-            }
-        }
 }
 
 function isParentOf(p, c) {
