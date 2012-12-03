@@ -39,8 +39,6 @@ $(window).load(function() {
     var globalArtistSupp = [];
     var globalName = "";
     
-    
-    
 	var color = d3.scale.category20();
 
 	var force = d3.layout.force()
@@ -63,6 +61,30 @@ $(window).load(function() {
     var svgFilterOut = d3.select("#filterOutDivLabels").append("svg")
                         .attr("width", 190)
                         .attr("height", 60) 
+    var query = window.location.search;
+    // Skip the leading ?, which should always be there,
+    // but be careful anyway
+    if (query.substring(0, 1) == '?') {
+        query = query.substring(1);
+    }
+    var data = query.split(',');
+    for (i = 0; (i < data.length); i++) {
+        data[i] = decodeURIComponent(data[i]);
+    }
+    if(data[0].length > 0){
+        lastfm.artist.getCorrection({artist: data[0]}, {success: function(newName){			
+			if(!((typeof newName.corrections.correction) === "undefined")){
+				globalName = newName.corrections.correction.artist.name;		
+				console.log("Corrected artist to:" + newName.corrections.correction.artist.name);}
+            else{globalName = data[0];}
+        
+            $("input:first").val(globalName); 
+            updateTagCloud(globalName, tagCloudLimit, firstRun);
+                        
+            rebuildGraph(globalName, function (){return false;});
+			}});
+    }
+                        
                         
     //manual tag entry for filter in                       
     $('#filter-in-form').submit(function (){
@@ -496,6 +518,7 @@ $(window).load(function() {
         var listLink = [];	
         artistInput = $("input:first").val(); 
         artistSelected = true;
+        
         
         //Check for artist correction
 		lastfm.artist.getCorrection({artist: artistInput}, {success: function(newName){			
