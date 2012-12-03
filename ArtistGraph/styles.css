@@ -113,6 +113,32 @@ header h2{
    /* border: 1px solid black;*/
 	display: inline-block;
 }
+.legendcol {
+    margin-top: 25px;
+    margin-left: 25px;
+    padding: 5px 25px 5px 25px;
+    clear:both;
+    top: 50%;
+    border: 1px solid black;
+    float: left;
+    background-color:#FAFAFA;
+}
+.legendcol h3 {
+    font-weight: normal;
+    margin: 2px;
+}
+.EventSty {
+   text-align: center;
+    color: #A64100;
+}
+.VenueSty{
+   text-align: center;
+    color: #0F4DA8;
+}
+.CitySty{
+   text-align: center;
+    color: #34D800;
+}
 
 
 .axis path,

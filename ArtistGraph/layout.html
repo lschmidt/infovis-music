@@ -282,7 +282,7 @@ svg.selectAll(".bar.negative")
 	svg.selectAll("text")
 		.data(similarArray.slice(0,tagLimit))
 		.enter().append("text")
-		.attr("x", function(d) { return x(0) + 10;})
+		.attr("x", function(d) { return x(0);})
 		.attr("y", function(d, i) { return y(i) + y.rangeBand()/2; })
 		.attr("dx", -20) // padding-right
 		//.attr("dy", ".35em") // vertical-align: middle
