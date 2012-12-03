@@ -46,6 +46,7 @@ $(window).load(function() {
   //change html on sunburst blocks
   sunburst(data[0], data[1], "left");
   sunburst(data[1], data[0], "right");
+  artistGraph(data[0]);
   graphComparison(data[0], data[1]);
     
 });
@@ -53,10 +54,15 @@ $(window).load(function() {
 function graphComparison(artistName, artist2Name)
 {
 	var div = "#centerfootercol2";
-	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
 
 }
 
+function artistGraph(artistName)
+{
+	var div = "#centerfootercol1";
+	$(div).html("Artist Graph<br><a href='../ArtistGraph/index.html?" + artistName + "'><img src='artistGraph.jpg' alt='Double Bar Graph'></a>");
+}
 function sunburst(artistName, artistOther, leftOrRight)
 {
  var artist = artistName;
@@ -357,7 +363,12 @@ svg.append("g")
                     <img src="bargraph.png" alt="Double Bar Graph">
                 </a>
             </div>
-			
+			<div class="centerfootercol" id="centerfootercol1">Artist Graph
+                <br>
+                <a href="../ArtistGraph/index.html">
+                    <img src="artistGraph.jpg" alt="Double Bar Graph">
+                </a>
+            </div>
 			 <div class="centerfootercol" id="centerfootercol">Pick New Artists!
                 <form name="inputForm"><input type="text" value ="Artist 1" id="artistInput1"><br>
                     <input type="text" value ="Artist 2" id="artistInput2"><br>

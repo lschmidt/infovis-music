@@ -32,6 +32,7 @@ var lastfm;
   //change html on sunburst blocks
   sunburst(data[0], data[1], "left");
   sunburst(data[1], data[0], "right");
+  artistGraph(data[0]);
   graphComparison(data[0], data[1]);
     
 });
@@ -42,7 +43,11 @@ function graphComparison(artistName, artist2Name)
 	$(div).html("Graph Comparison<br><a href='../ArtistGraph/layout.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
 
 }
-   
+function artistGraph(artistName)
+{
+	var div = "#centerfootercol1";
+	$(div).html("Artist Graph<br><a href='../ArtistGraph/index.html?" + artistName + "'><img src='artistGraph.jpg' alt='Double Bar Graph'></a>");
+}
 function sunburst(artistName, artistOther, leftOrRight)
 {
  var artist = artistName;
