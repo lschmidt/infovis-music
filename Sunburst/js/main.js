@@ -89,7 +89,7 @@ for (var i=0, len = data.events.event.length; i < len; i++){
 var d = new Date (data.events.event[i].startDate);
 var month = monthNames[d.getMonth()];
 var year = d.getFullYear();
-year = '\''+year+'\'';
+year = ''+year+'';
 
 if (typeof(test[year]) === "undefined")
 {
@@ -136,8 +136,8 @@ var width = 840,
     height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
-    y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]),
-    padding = 5,
+    y = d3.scale.pow().exponent(2.8).domain([0, 1]).range([0, radius]),
+    padding = 4,
     duration = 1000;
 
 var div = d3.select("#centercol");
@@ -197,23 +197,23 @@ var act = textEnter.append("tspan")
     .attr("id", "EvEvent")
     .attr("title", d.name)
       .attr("x", 0)
-	  .attr("dy", "0em")
+	  .attr("dy", "-.5em")
       .attr("fill", function(d){return (d.depth < 3) ? "black" : "#A64100"})
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 22) : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 40) : ""; });
       
 var venue = textEnter.append("tspan")
     .attr("id", "EvVenue")
       .attr("x", 0)
-      .attr("dy", "1em")
+      .attr("dy", ".9em")
       .attr("fill", "#0F4DA8")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 22) || "" : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 40) || "" : ""; });
 
 var loc =  textEnter.append("tspan")
     .attr("id", "EvLocation")
     .attr("x", 0)
-      .attr("dy", "1em")
+      .attr("dy", ".9em")
       .attr("fill", "#34D800")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 22) || "" : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 40 ) || "" : ""; });
 
   function click(d) {
     path.transition()

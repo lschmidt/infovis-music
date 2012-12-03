@@ -130,14 +130,17 @@ header h2{
 .EventSty {
    text-align: center;
     color: #A64100;
+	white-space: nowrap;
 }
 .VenueSty{
    text-align: center;
     color: #0F4DA8;
+	white-space: nowrap;
 }
 .CitySty{
    text-align: center;
     color: #34D800;
+	white-space: nowrap;
 }
 
 
