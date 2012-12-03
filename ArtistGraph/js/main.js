@@ -18,7 +18,7 @@ $(window).load(function() {
 	var width = 700,
 	height = 500;
 
-	var numArtists = 10;
+	var numArtists = 15;
     var numDrawnArtistsCap = 4;
     var numDrawnArtists = 0;
 	var minEdgeLen = 60;
@@ -26,7 +26,7 @@ $(window).load(function() {
     var tagCloudLimit = 12;
 	var artistSelected = false;
     var artistInput = ""
-    var tagLimit = 20;
+    var tagLimit = 50;
     
     var filterInList = []
     var filterOutList = []
@@ -161,8 +161,6 @@ $(window).load(function() {
     
     
     function drawGraph(jsonGraph){
-        console.log(globalArtistData)
-                        console.log(mostPopularArtist())
 		var link = svg.selectAll("line.link")
 		.data(jsonGraph.links)
 		.attr("x1", width/2)
@@ -318,7 +316,7 @@ $(window).load(function() {
         }
     }
     
-    //THIS WAS SO BROKEN, SIGH -2:41am
+    //THIS IS SO BROKEN, SIGH -2:41am
     function filterEvents(artData, callback){
         callback(artData);
     }  
@@ -364,9 +362,8 @@ $(window).load(function() {
     
     function getSimilarArtistInfo(similarArtists, callback){
         var simArtistData = [];
-//        for (var i=0, len = similarArtists.length-1; i < len; i++){
         for (i in similarArtists){
-            sleep(100);
+            sleep(50);
             lastfm.artist.getInfo({artist: similarArtists[i].name}, {success: function(artInfo){ 
                 getAllTheTags(similarArtists[i].name, function(ttags) {
                     simArtistData.push({name:artInfo.artist.name,
@@ -383,10 +380,14 @@ $(window).load(function() {
         }
     }
     
-    function resetArtistViability(){
+    function resetArtistViability(localArtistData){
         for (i in globalArtistData){
             globalArtistData[i].include = 1;
-         } 
+         }
+        for (j in localArtistData){
+            localArtistData[j].include = 1;
+        }
+        return localArtistData;
     }
     
     function rebuildGraph(name, callback){
@@ -396,7 +397,7 @@ $(window).load(function() {
                 globalArtistData = artistData2;
                 globalArtistSupp = data1;
                 //Filter the users
-                refilterGraph(name, artistData2, data1);
+                refilterGraph(name, globalArtistData, globalArtistSupp);
                 //make a call to the comparison screen!
                 callback();
             });
@@ -408,6 +409,7 @@ $(window).load(function() {
         var listLink1 = [];
         var jsonGraph1 = {};
         
+        artistData = resetArtistViability(artistData);
         if(filterInFlag){filterIn(artistData, filterInList);}
         if(filterOutFlag){filterOut(artistData, filterOutList);}
         if(filterPopFlag){filterPopularity(artistData);}
@@ -422,7 +424,7 @@ $(window).load(function() {
         }
 
         jsonGraph1 = {"nodes":listy1, "links":listLink1};
-
+    
         if(firstRun){
             drawGraph(jsonGraph1);
             firstRun = false;
@@ -437,6 +439,7 @@ $(window).load(function() {
         runListeners();
         numDrawnArtists = c;
     }
+    
     function runListeners(){
         d3.selectAll("line.link").on("click", function(d) {
                     console.log(d.source.name +"---"+ d.target.name)
@@ -504,11 +507,6 @@ $(window).load(function() {
             updateTagCloud(artistInput, tagCloudLimit, firstRun);
                         
             rebuildGraph(artistInput, function (){return false;});
-            //THESE NEEDS TO BE MOVED DOWN DERRRRRP        
-                //}); //filterevents call
-            //});
-            
-//		}});//similar
 			}});// name correction 
 		return false;
 		});//d3 select button
