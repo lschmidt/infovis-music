@@ -38,7 +38,7 @@ $(window).load(function() {
   }
   var data = query.split(',');
   for (i = 0; (i < data.length); i++) {
-    data[i] = unescape(data[i]);
+    data[i] = decodeURIComponent(data[i]);
   }
   
   compareArtists(data[0], data[1]);
@@ -53,7 +53,7 @@ $(window).load(function() {
 function graphComparison(artistName, artist2Name)
 {
 	var div = "#centerfootercol2";
-	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
 
 }
 
@@ -72,7 +72,7 @@ function sunburst(artistName, artistOther, leftOrRight)
         
         // Check if a value has been entered into the search
         
-        $(div).html("Historical-Sunburst: " + artist + "<br><a href='../Sunburst/index.html?" + artist + "," + artistOther + "'><img src='wheel.png' alt='Sunburst'></a>");
+        $(div).html("Historical-Sunburst: " + artist + "<br><a href='../Sunburst/index.html?" + encodeURIComponent(artist) + "," + encodeURIComponent(artistOther) + "'><img src='wheel.png' alt='Sunburst'></a>");
 
 }
 
@@ -178,7 +178,7 @@ function sendData(artist1){
 function getArtist(artistName, leftOrRight){
    	    // Save Search Term
         var artist = artistName;
-        
+        console.log(artistName);
 		if(leftOrRight == "left")
 		{
 			var header = "h1Left";
