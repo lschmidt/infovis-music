@@ -24,17 +24,8 @@ header h2{
     float: left;
     width: 250px;
   }
-  
-.legendcol {
-    background-color: #FAFAFA;
-    border: 1px solid #404040;
-    float: left;
-    width: 250px;
-}
- .legendcol h1 {
-    font-size: 20px;
- }
  .leftcol h1 {
+    font: Times;
     font-size: 20px;
  }
  .clearfix{
@@ -59,7 +50,6 @@ header h2{
     font-size: 20px;
  }
  #footer {
-   border-top: 1px solid #C8C8C8;
    /*text-align: center;
       border: #fc0 1px solid;*/
  }
@@ -78,25 +68,64 @@ header h2{
 .axis text {
   font: 10px sans-serif;
 }
+
+#footer .footer-banner {
+    border-top: 1px solid #C8C8C8;
+    border-bottom: 1px solid #303030;
+    background-color:#b70300;
+    width: 100%;
+    min-height: 20 px;
+    max-height: 38 px;
+}
+
+#footer h3 {
+    color: white;
+    font-weight: normal;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
 #footer .leftfootercol {
+    margin: 10px 10px 10px 10px;
 	text-align: center;
     float: left;
-    border: 1px solid black;
+   /* border: 1px solid black;*/
 	
 
 }
 #footer .rightfootercol {
+    margin: 10px 10px 10px 10px;
 	text-align: center;
     float: right;
-    border: 1px solid black;
+   /* border: 1px solid black;*/
 	
 }
 #footer .centerfootercol {
+    margin-top: 10px;
     text-align: center;
+   /* border: 1px solid black;*/
+}
+
+#footer .centerfootercol2 {
+    margin-top: 10px;
+    text-align: center;
+   /* border: 1px solid black;*/
+	
+}
+
+.legendcol {
+    margin-top: 25px;
+    margin-left: 25px;
+    padding: 5px 25px 5px 25px;
+    clear:both;
+    top: 50%;
     border: 1px solid black;
-    
-	margin-right: auto;
-	margin-left: auto;
+    float: left;
+    background-color:#FAFAFA;
+}
+.legendcol h3 {
+    font-weight: normal;
+    margin: 2px;
 }
 .EventSty {
    text-align: center;
@@ -110,6 +139,7 @@ header h2{
    text-align: center;
     color: #34D800;
 }
+
 
 
 .axis path,

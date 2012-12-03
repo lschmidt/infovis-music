@@ -58,7 +58,7 @@ function sunburst(artistName, artistOther, leftOrRight)
         
         // Check if a value has been entered into the search
         
-        $(div).html("Calendar of Past Events for: " + artist + "<br><a href='../Sunburst/index.html?" + artist + "," + artistOther + "'><img src='wheel.png' alt='Sunburst'></a>");
+        $(div).html("Historical-Sunburst: " + artist + "<br><a href='../Sunburst/index.html?" + artist + "," + artistOther + "'><img src='wheel.png' alt='Sunburst'></a>");
 
 }
    
@@ -322,10 +322,10 @@ function getArtist(artistName, leftOrRight){
         else {
             $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(artist) + "&api_key=6be25b22a1523c79be75513d30d14e99&limit=12&format=json&callback=?", function(data) {
                 console.log(encodeURI(artist))
-        		var html = '';
+                var html = '';
                 console.log(data.artist.name)
         		//$.each(data.artist.url, function(i, item) {
-            		html += "<h1>" + data.artist.name + "</h1><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " '/></a> <br/>" +
+            		html += "<h1>" + data.artist.name + "</h1><center><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " 'style='border: 1px solid black;' /></a></center>" +
 					data.artist.bio.summary;
         		//}); // End each
         		

@@ -13,7 +13,7 @@
 <script>
 
 var lastfm;
-
+var tagLimit = 15;
 $(window).load(function() {
 
     // define api keys
@@ -215,11 +215,7 @@ function getArtist(artistName, leftOrRight){
 function drawEverything(similarArray, rTagCount, lTagCount)
 {
 
-
-
-
-d3.select("svg")
-       .remove();
+d3.select("svg").remove();
 //var dataR = [15, 20, 22, 18, 2, 6, 26, 18];
 var dataR = rTagCount;
 //var dataL = [5, 22, 6, 12, 14, 16, 6, 10];
@@ -237,7 +233,7 @@ var margin = {top: 30, right: 10, bottom: 10, left: 10},
     height = 500 - margin.top - margin.bottom;
 	
 
-var x0 = Math.max(-d3.min(dataL), d3.max(dataL));
+var x0 = Math.max(-d3.min(dataL.slice(0,tagLimit)), d3.max(dataL.slice(0,tagLimit)));
 
 var x = d3.scale.linear()
     .domain([-125, 125])
@@ -245,7 +241,7 @@ var x = d3.scale.linear()
     .nice();
 
 var y = d3.scale.ordinal()
-    .domain(d3.range(dataR.length))
+    .domain(d3.range(dataR.slice(0,tagLimit).length))
     .rangeRoundBands([0, height], .2);
 
 var xAxis = d3.svg.axis()
@@ -265,7 +261,7 @@ var svg = d3.select("#centercol").append("svg")
 
 
 svg.selectAll(".bar.positive")
-    .data(dataR)
+    .data(dataR.slice(0,tagLimit))
   .enter().append("rect")
     .attr("class", function(d) { return "bar positive"; })
     .attr("x", function(d) { return x(0); })
@@ -274,7 +270,7 @@ svg.selectAll(".bar.positive")
     .attr("height", function(d, i) { return heightR; })
 	
 svg.selectAll(".bar.negative")
-    .data(dataL)
+    .data(dataL.slice(0,tagLimit))
 	.enter().append("rect")
     .attr("class", function(d) { return "bar negative"; })
     .attr("x", function(d) { return x(-d); })
@@ -284,12 +280,12 @@ svg.selectAll(".bar.negative")
 	
 
 	svg.selectAll("text")
-		.data(similarArray)
+		.data(similarArray.slice(0,tagLimit))
 		.enter().append("text")
 		.attr("x", function(d) { return x(0) + 10;})
-		.attr("y", function(d, i) { return y(i) + y.rangeBand() / 2 - 5; })
+		.attr("y", function(d, i) { return y(i) + y.rangeBand()/2; })
 		.attr("dx", -20) // padding-right
-		.attr("dy", ".35em") // vertical-align: middle
+		//.attr("dy", ".35em") // vertical-align: middle
 		.attr("text-anchor", "end") // text-align: right
 		.text(String)
 		.on("click", function(){
@@ -367,18 +363,7 @@ svg.append("g")
                     <input type="text" value ="Artist 2" id="artistInput2"><br>
                 </form>
                 <button name="goButton" onclick="getArtists()">Compare Artists</button>
-				
             </div>
-			
-			
-			
-			
-           
         </div>
-
-
-
-	
  	</body>
- 
  </html> 
