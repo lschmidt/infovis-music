@@ -97,12 +97,14 @@ header .stuts span {
     border-bottom: 1px solid #C8C8C8;  
 }
 .content-body .content-body-inner .content-filter-in {
+    font-size: 12px;
     min-width: 194px;
     min-height: 100px;
     float: left;
     margin-bottom: 3px;
 }
 .content-body .content-body-inner .content-filter-out {
+    font-size: 12px;
     border-top: 1px solid #C8C8C8;
     min-width: 194px;
     min-height: 100px;

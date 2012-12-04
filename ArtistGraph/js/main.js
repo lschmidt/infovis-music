@@ -481,8 +481,9 @@ $(window).load(function() {
             updateFilterOut(0);
         });
         
-        //check box activation for filter in                    
-        $("#filter-in-form input:checkbox").change(function(){
+        //check box activation for filter in    
+        $("#filter-in-check input:checkbox").change(function(){                
+//        $("#filter-in-form input:checkbox").change(function(){
             if($(this).attr('checked')){filterInFlag=1; console.log('Filtering In');}
             else{filterInFlag=0;resetArtistViability();console.log('!Filtering In');}
             refilterGraph(globalName, globalArtistData, globalArtistSupp);
@@ -490,7 +491,7 @@ $(window).load(function() {
         });
         
         //check box activation for filter out
-        $("#filter-out-form input:checkbox").change(function(){
+        $("#filter-out-check input:checkbox").change(function(){
             if($(this).attr('checked')){filterOutFlag=1; console.log('Filtering Out');}
             else{filterOutFlag=0;resetArtistViability();console.log('!Filtering Out');}
             refilterGraph(globalName, globalArtistData, globalArtistSupp);
