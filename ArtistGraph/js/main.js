@@ -366,6 +366,7 @@ $(window).load(function() {
     function filterPopularity(artistData){
         //take out the top 
         for (var i=0; i < filterPopFlag; i++){
+            alert("Dropping " + artistData[mostPopularArtist(artistData)].name)
             artistData[mostPopularArtist(artistData)].include = 0;
          } 
     }

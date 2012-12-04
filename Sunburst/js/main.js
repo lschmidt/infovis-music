@@ -137,12 +137,12 @@ pastEventsArray.push({name:Object.keys(test)[j],children:yearEvents});
 var pastEventsJson = {"children":pastEventsArray};
 
 
-var width = 840,
+var width = 900,
     height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
-    y = d3.scale.pow().exponent(2.8).domain([0, 1]).range([0, radius]),
-    padding = 4,
+    y = d3.scale.pow().exponent(2).domain([0, 1]).range([0, radius]),
+    padding = 3,
     duration = 1000;
 
 var div = d3.select("#centercol");
@@ -157,7 +157,6 @@ var vis = div.append("svg")
 
 div.append("p")
     .attr("id", "intro")
-    .text("Click to zoom!");
 
 var partition = d3.layout.partition()
     .sort(null)
@@ -202,23 +201,24 @@ var act = textEnter.append("tspan")
     .attr("id", "EvEvent")
     .attr("title", d.name)
       .attr("x", 0)
-	  .attr("dy", "-.5em")
+	  .attr("dy", function(e) {return (e.depth < 3) ? ".2em" : "-.5em";})
       .attr("fill", function(d){return (d.depth < 3) ? "black" : "#A64100"})
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 40) : ""; });
-      
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[0], 38) : ""; });
+  
 var venue = textEnter.append("tspan")
     .attr("id", "EvVenue")
+    .attr("value", d.name)
       .attr("x", 0)
       .attr("dy", ".9em")
       .attr("fill", "#0F4DA8")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 40) || "" : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[1], 38) || "" : ""; });
 
 var loc =  textEnter.append("tspan")
     .attr("id", "EvLocation")
     .attr("x", 0)
       .attr("dy", ".9em")
       .attr("fill", "#34D800")
-      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 40 ) || "" : ""; });
+      .text(function(d) { return d.depth ? nameTooLong(d.depth, d.name.split("/")[2], 38) || "" : ""; });
 
   function click(d) {
     path.transition()
@@ -248,8 +248,7 @@ var loc =  textEnter.append("tspan")
         .each("end", function(e) {
           d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
         });
-  }
-;
+    }
 
 function nameTooLong(depth, inputStr, strLen){
     if(depth >= 3){

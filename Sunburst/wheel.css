@@ -1,18 +1,18 @@
 path {
   stroke: #000;
-  stroke-width: 1.5;
+  stroke-width: 1;
   cursor: pointer;
 }
 
 text {
-  font: 11px sans-serif;
+  font: 10px sans-serif;
   cursor: pointer;
 }
 
 
 h1 {
   text-align: center;
-  margin: .5em 0;
+  /*margin: 3.5em 0;*/
 }
 
 p#intro {
