@@ -113,6 +113,7 @@ header h2{
     text-align: center;
    /* border: 1px solid black;*/
 	display: inline-block;
+    float:left
 }
 
 #footer .centerfootercol2 {
@@ -120,6 +121,7 @@ header h2{
     text-align: center;
    /* border: 1px solid black;*/
 	display: inline-block;
+    float:right
 }
 .legendcol {
     margin-top: 25px;
