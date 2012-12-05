@@ -47,7 +47,7 @@ var lastfm;
   }
   var data = query.split(',');
   for (i = 0; (i < data.length); i++) {
-    data[i] = unescape(data[i]);
+    data[i] = decodeURIComponent(data[i]);
   }
    getArtist(data[0], "left");
    getArtist(data[1], "right");
@@ -70,7 +70,7 @@ var lastfm;
 function graphComparison(artistName, artist2Name)
 {
 	var div = "#centerfootercol2";
-	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
 
 }
 function topAlbums(artistName, artist2Name)
@@ -82,7 +82,7 @@ function topAlbums(artistName, artist2Name)
 function artistGraph(artistName)
 {
 	var div = "#centerfootercol1";
-	$(div).html("Artist Graph<br><a href='../ArtistGraph/index.html?" + artistName + "'><img src='artistGraph.jpg' alt='Double Bar Graph'></a>");
+	$(div).html("Artist Graph<br><a href='../ArtistGraph/index.html?" + encodeURIComponent(artistName) + "'><img src='artistGraph.jpg' alt='Double Bar Graph'></a>");
 }
 
 function sunburst(artistName, artistOther, leftOrRight)
