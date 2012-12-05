@@ -48,7 +48,7 @@ function graphComparison(artistName, artist2Name)
 function topAlbums(artistName, artist2Name)
 {
 	var div = "#centerfootercol3";
-	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbums3.png' alt='Double Bar Graph'></a>");
+	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbumsSmall.jpg' alt='Double Bar Graph'></a>");
 
 }
 
