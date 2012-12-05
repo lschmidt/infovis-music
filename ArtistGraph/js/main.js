@@ -116,6 +116,7 @@ $(window).load(function() {
         else{ 
             filterPCount = 0; 
         }
+        if(artistSelected){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
     });
     
     //checkbox activation for filter in
