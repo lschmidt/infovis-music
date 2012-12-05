@@ -432,6 +432,8 @@ $(window).load(function() {
     
     function rebuildGraph(name, callback){
         lastfm.artist.getSimilar({artist: name, limit:numArtists}, {success: function(data1){
+        	name = data1.similarartists["@attr"].artist;
+        	globalName = name;
             getSimilarArtistInfo(data1.similarartists.artist, function(artistData2){
                 //set the designated poor-form globals
                 globalArtistData = artistData2;
