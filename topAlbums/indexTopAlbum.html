@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Last.fm javascript API</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />
+<meta charset="utf-8">
+<title>Artist Comparison</title>
 
-    <!-- load d3 -->
-    <script type="text/javascript" src="d3/d3.v2.js"></script>
-    
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="../ArtistGraph/styles.css" rel="stylesheet" type="text/css" />
+<link href="../Sunburst/wheel.css" rel="stylesheet">
+
+ <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- load jquery and jsrender libraries -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/jsrender.js"></script>
@@ -17,42 +17,272 @@
     <script type="text/javascript" src="js/lastfm.api.js"></script>
     <script type="text/javascript" src="js/lastfm.api.cache.js"></script>
 
-    <!-- define three templates for our units -->
-    <script id="lastfmTemplateArtists" type="text/x-jsrender">
-        <div id="{{:mbid}}" class="artist2">
-            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
-        </div>
-    </script>
+	<!--<script type="text/javascript" src="js/mainTopAlbumsView.js"></script>-->
+		
+<script>
 	
-	 <script id="lastfmTemplateArtists2" type="text/x-jsrender">
-        <div id="{{:mbid}}" class="artist2">
-            <a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
-        </div>
-    </script>
+// on page load
+var lastfm;
+ $(window).load(function() {
+
+    // define api keys
+    var apiKey = 'fa1830abafe042c4a5a8a49d9f966288';
+    var apiSecret = '6296e2516b3980a5e884dc037336766d';
+ 
+    // create a Cache object
+    var cache = new LastFMCache();
+
+    // create a LastFM object
+     lastfm = new LastFM({
+        apiKey    : apiKey,
+        apiSecret : apiSecret,
+        cache     : cache
+    });
     
-	<script type="text/javascript" src="js/mainTopAlbumsView.js"></script>
-	<style>
-	#main{
-	margin:0px
-	}
-	</style>
-
-</head>
-
-<body>
-    <header>
-        <h2 align="center">Top Albums</h2>
-    </header>
-
-    <form name="inputForm"><input type="text" value ="Cher" name="artistInput">
-	<input type="text" value ="Pink Floyd" name="artistInput2"></form>
-	<button name="goButton"> Go > </button>
+	var query = window.location.search;
+  // Skip the leading ?, which should always be there,
+  // but be careful anyway
+  if (query.substring(0, 1) == '?') {
+    query = query.substring(1);
+  }
+  var data = query.split(',');
+  for (i = 0; (i < data.length); i++) {
+    data[i] = unescape(data[i]);
+  }
+   getArtist(data[0], "left");
+   getArtist(data[1], "right");
+  
+  $('input[name=artist1]').val(data[0]);
+  $('input[name=artist2]').val(data[1]);
+  
+  //compareArtists(data[0], data[1]);
+  
+  //change html on sunburst blocks
+  sunburst(data[0], data[1], "left");
+  sunburst(data[1], data[0], "right");
+  showAlbums(data[0],data[1]);
+  artistGraph(data[0]);
+  topAlbums(data[0],data[1]);
+  graphComparison(data[0], data[1]);
+  
+  });
 	
-	<div id="container">	
+function graphComparison(artistName, artist2Name)
+{
+	var div = "#centerfootercol2";
+	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+
+}
+function topAlbums(artistName, artist2Name)
+{
+	var div = "#centerfootercol3";
+	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbums3.png' alt='Double Bar Graph'></a>");
+
+}
+function artistGraph(artistName)
+{
+	var div = "#centerfootercol1";
+	$(div).html("Artist Graph<br><a href='../ArtistGraph/index.html?" + artistName + "'><img src='artistGraph.jpg' alt='Double Bar Graph'></a>");
+}
+
+function sunburst(artistName, artistOther, leftOrRight)
+{
+ var artist = artistName;
+        
+		if(leftOrRight == "left")
+		{
+			var div = "#leftfootercol";
+		}
+		else
+		{
+			var div = "#rightfootercol";
+		}
+        
+        // Check if a value has been entered into the search
+        
+        $(div).html("Historical-Sunburst: " + artist + "<br><a href='../Sunburst/index.html?" + encodeURIComponent(artist) + "," + encodeURIComponent(artistOther) + "'><img src='wheel.png' alt='Sunburst'></a>");
+
+}
+
+
+function getArtists()
+{
+	var artist1 = document.getElementById('artistInput1').value;
+	var artist2 = document.getElementById('artistInput2').value;
+	console.log(artist1);
+		console.log(artist2);
+	refresh(artist1,artist2);
+}
+	
+	
+function showAlbums(artist1,artist2){
+   // var artistName1 = document.forms["inputForm"].elements["artistInput1"].value;
+   
+   var artistName1 = artist1;
+   //console.log(artist1);
+    lastfm.artist.getTopAlbums({artist: artist1, limit: 5}, {success: function(data){
+
+        $('#top_artists').html(
+            $('#lastfmTemplateArtists').render(data.topalbums.album)
+        );
+	
+    }});
+
+	//var artistName2 = document.forms["inputForm"].elements["artistInput2"].value;
+	 var artistName2 = artist2;
+	 //console.log(artist2);
+	lastfm.artist.getTopAlbums({artist: artist2, limit: 5}, {success: function(data){
+
+        $('#top_artists2').html(
+            $('#lastfmTemplateArtists2').render(data.topalbums.album)
+        );
+
+    }});
+	}
+	
+var div = d3.select("#centercol");
+
+div.select("img").remove();
+
+var centerWidth = document.getElementById("centercol").offsetWidth;
+
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = centerWidth - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+	
+	function refresh(artist1, artist2){
+
+      // Initialize packed or we get the word 'undefined'      
+      var delim = ",";
+      window.location = "indexTopAlbum.html?" + artist1 + delim + artist2;
+    }
+
+function getArtist(artistName, leftOrRight){
+   	    // Save Search Term
+        var artist = artistName;
+       // console.log(artistName);
+		if(leftOrRight == "left")
+		{
+			var header = "h1Left";
+			var div = "#leftcol";
+		}
+		else
+		{
+			var header = "h1Right";
+			var div = "#rightcol";
+		}
+        
+        // Check if a value has been entered into the search
+        if(artist == ''){
+        	$(div).html("<h2 class='loading'>We Can't Find Related Artists Without an Artist! Enter One!</h2>");
+        } 
+        else {
+            $.getJSON("http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + encodeURIComponent(artist) + "&api_key=6be25b22a1523c79be75513d30d14e99&limit=12&format=json&callback=?", function(data) {
+               // console.log(encodeURI(artist))
+        		var html = '';
+                //console.log(data.artist.name)
+        		//$.each(data.artist.url, function(i, item) {
+            		html += "<h1>" + data.artist.name + "</h1><center><a href='" + data.artist.url + "'><img src='" + data.artist.image[2]['#text'] + " ' alt=' " + data.artist.name + " 'style='border: 1px solid black;' /></a></center>" +
+					data.artist.bio.summary;
+        		//}); // End each
+        		
+        		$(div).html("<ul class='clearfix'>" +html+ "</ul>");
+    		}); // End getJSON
+
+        } // End Else
+   		return false;
+   } // End getArtist
+	
+
+</script>
+
+ <html xmlns="http://www.w3.org/1999/xhtml">
+ 
+ 	<head>
+		<title>3 Column with Footer Layout Template</title>
+		<link href="styles.css" rel="stylesheet" type="text/css" />
 		
-            <div class="content-body-inner" id="top_artists" style="float:left;margin-left:400px"></div>
-			<div class="content-body-inner2" id="top_artists2" style="float:right;margin-right:400px"></div>
+		<script id="lastfmTemplateArtists" type="text/x-jsrender">
+			<div id="{{:mbid}}" class="artist2">
+				<a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
+			</div>
+		</script>
+	
+		<script id="lastfmTemplateArtists2" type="text/x-jsrender">
+			<div id="{{:mbid}}" class="artist2">
+				<a href="{{:url}}" rel="nofollow" target="_blank"><img src="{{:image[2]["#text"]}}" alt="{{:name}}" /><p><b>{{:name}}</b></p></a><br/>
+			</div>
+		</script>
+	</head>
+	
+	<header>
+        <h2>Top Albums</h2>
+    </header>
+	
+	<body>
+ 		<div id="main">
+		<div class="topcenter" id="topcenter">
+            <input type="text" name="artist1" value ="" id="artistInput1">
+                <button name="goButton" onclick="getArtists()">Compare New Artists</button>
+			<input type="text" name="artist2" value ="" id="artistInput2">
+               
+        </div>
 		
-	</div>
-</body>
+           <div class="leftcol" id="leftcol"><center><h1 id="h1Left">Artist</h1></center>
+            </div>
+            <div class="rightcol" id="rightcol"><center><h1 id="h1Right">Artist 1</h1></center>
+                <img id="imgRight"></img>
+ 			</div>
+ 		<!--	<div class="centercol" id="centercol"><center><h1>Top Albums</h1></center>
+ 			</div>-->
+			
+			<div id="container">	
+		
+				<div class="content-body-inner" id="top_artists" style="float:left;margin-left:220px"></div>
+				<div class="content-body-inner2" id="top_artists2" style="float:left; margin-left:120px"></div>
+			</div>	
+ 		</div>
+		
+ 		<br id="footerbr" />
+ 		<div id="footer">
+            <div id="footer-banner" class="footer-banner">
+				<h3><center>Other Views</center></h3>
+            </div>
+            <div class="leftfootercol" id="leftfootercol">
+				Calendar of Events<br>
+				<a href="../Sunburst/index.html">
+					<img src="wheel.png" alt="Sunburst">
+                </a>
+            </div>
+					
+            <div class="rightfootercol" id="rightfootercol">
+			Calendar of Events<br>
+                <a href="../Sunburst/index.html">
+                    <img src="wheel.png" alt="Sunburst">
+                </a>
+            </div>
+			
+			<div class="centerfootercol" id="centerfootercol2">Graph Comparison
+                <br>
+                <a href="../ArtistGraph/layout.html">
+                    <img src="bargraph.png" alt="Double Bar Graph">
+                </a>
+            </div>
+			
+			<div class="centerfootercol" id="centerfootercol1" style="margin-top:0px">Artist Graph
+                <br>
+                <a href="../ArtistGraph/index.html">
+                    <img src="artistGraph.jpg" alt="Double Bar Graph">
+                </a>
+            </div>
+			
+			<div class ="centerfootercol" id="centerfootercol3">Top Albums
+			<br>
+				<a href="../topAlbums/indexTopAlbum.html">
+					<img src="topalbums3.png" alt="Top Albums">
+				</a>
+			</div>		
+        </div>
+ 	</body>
+
 </html>

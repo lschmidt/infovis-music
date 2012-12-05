@@ -33,6 +33,7 @@ var lastfm;
   sunburst(data[0], data[1], "left");
   sunburst(data[1], data[0], "right");
   artistGraph(data[0]);
+  topAlbums(data[0],data[1]);
   graphComparison(data[0], data[1]);
     
 });
@@ -43,6 +44,14 @@ function graphComparison(artistName, artist2Name)
 	$(div).html("Graph Comparison<br><a href='../ArtistGraph/layout.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
 
 }
+
+function topAlbums(artistName, artist2Name)
+{
+	var div = "#centerfootercol3";
+	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbums3.png' alt='Double Bar Graph'></a>");
+
+}
+
 function artistGraph(artistName)
 {
 	var div = "#centerfootercol1";

@@ -50,6 +50,7 @@ $(window).load(function() {
   sunburst(data[0], data[1], "left");
   sunburst(data[1], data[0], "right");
   artistGraph(data[0]);
+  topAlbums(data[0],data[1]);
   graphComparison(data[0], data[1]);
     
 });
@@ -58,6 +59,13 @@ function graphComparison(artistName, artist2Name)
 {
 	var div = "#centerfootercol2";
 	$(div).html("Genre-Comparison<br><a href='../ArtistGraph/layout.html?" + artistName + "," + artist2Name + "'><img src='bargraph.png' alt='Double Bar Graph'></a>");
+
+}
+
+function topAlbums(artistName, artist2Name)
+{
+	var div = "#centerfootercol3";
+	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbums3.png' alt='Double Bar Graph'></a>");
 
 }
 
@@ -386,6 +394,13 @@ svg.append("g")
                     <img src="artistGraph.jpg" alt="Double Bar Graph">
                 </a>
             </div>
+			
+			<div class ="centerfootercol" id="centerfootercol3">Top Albums
+			<br>
+				<a href="../topAlbums/indexTopAlbum.html">
+					<img src="topalbums3.png" alt="Top Albums">
+				</a>
+			</div>	
 			 
         </div>
  	</body>

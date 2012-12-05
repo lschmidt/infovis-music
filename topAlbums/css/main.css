@@ -73,10 +73,20 @@ header .stuts span {
     position: relative;
 }
 
+.content-body .content-body-inner2 {
+    border-bottom: 1px solid #E8E8E8;
+    min-height: 51px;
+    overflow: hidden;
+    padding: 9px 12px;
+    position: relative;
+	margin-left:120px;
+	}
+
  #container {
    margin: 0px;
+   vertical-align:top;
  }
-
+ 
 /* list of artists */
 .artist {
     display: block;
