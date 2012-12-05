@@ -431,6 +431,7 @@ $(window).load(function() {
     }
     
     function rebuildGraph(name, callback){
+    	svg.selectAll("text.loading").transition().duration(550).attr("opacity", .75);
         lastfm.artist.getSimilar({artist: name, limit:numArtists}, {success: function(data1){
         	name = data1.similarartists["@attr"].artist;
         	globalName = name;
@@ -443,7 +444,6 @@ $(window).load(function() {
     
                 svg.selectAll("text.loading").transition().duration(750).attr("opacity", 0);
                 //make a call to the comparison screen!
-                
                 callback();
             });
         }}); //get similar+transition
@@ -550,7 +550,7 @@ $(window).load(function() {
         artistInput = $("input:first").val(); 
         artistSelected = true;
         
-        svg.selectAll("text.loading").transition().duration(550).attr("opacity", 0.75);
+        //svg.selectAll("text.loading").transition().duration(550).attr("opacity", 0.75);
         
         //Check for artist correction
 		lastfm.artist.getCorrection({artist: artistInput}, {success: function(newName){			
