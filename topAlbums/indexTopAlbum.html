@@ -140,16 +140,6 @@ function showAlbums(artist1,artist2){
     }});
 	}
 	
-var div = d3.select("#centercol");
-
-div.select("img").remove();
-
-var centerWidth = document.getElementById("centercol").offsetWidth;
-
-var margin = {top: 30, right: 10, bottom: 10, left: 10},
-    width = centerWidth - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-	
 	function refresh(artist1, artist2){
 
       // Initialize packed or we get the word 'undefined'      
@@ -239,7 +229,7 @@ function getArtist(artistName, leftOrRight){
 			<div id="container">	
 		
 				<div class="content-body-inner" id="top_artists" style="float:left;margin-left:220px"></div>
-				<div class="content-body-inner2" id="top_artists2" style="float:left; margin-left:120px"></div>
+				<div class="content-body-inner2" id="top_artists2" style="float:left; margin-left:70px"></div>
 			</div>	
  		</div>
 		
