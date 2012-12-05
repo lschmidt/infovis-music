@@ -27,6 +27,7 @@ $(window).load(function() {
 	var artistSelected = false;
     var artistInput = ""
     var tagLimit = 50;
+    var linkDistanceMax = 250;
     
     var filterInList = []
     var filterOutList = []
@@ -41,6 +42,7 @@ $(window).load(function() {
     
 	var color = d3.scale.category20();
 
+
 	var force = d3.layout.force()
 	.charge(-1000)
     .gravity(.3)
@@ -50,7 +52,17 @@ $(window).load(function() {
 	var svg = d3.select("#chart").append("svg")
 	.attr("width", width)
 	.attr("height", height);
-   
+	
+	svg.selectAll("text").data(["Loading"])
+            .enter().append("text")
+            .text(function(d, i) { return d; })
+            .attr("class", "loading")
+            .attr("x", width/2)
+            .attr("y", height/4)
+            .attr("fill", "black")
+            .attr("opacity", 0);
+
+	
     var svgTagCloud = d3.select("#filterCloudDiv").append("svg")
                         .attr("width", 200)
                         .attr("height", 60)
@@ -89,9 +101,11 @@ $(window).load(function() {
     //manual tag entry for filter in                       
     $('#filter-in-form').submit(function (){
         var tag = $("#filter-in-form input:text").val(); 
-        filterInList.push(tag);
-        updateFilterIn(1);
-        if(artistSelected && $("#filter-in-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
+        if(filterInList.indexOf(tag)==-1){
+	        filterInList.push(tag);
+	        updateFilterIn(1);
+	        if(artistSelected && $("#filter-in-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
+        }
         return false;
     });
     
@@ -129,9 +143,11 @@ $(window).load(function() {
     //manual tag entry for filter out
     $('#filter-out-form').submit(function (){
         var tag = $("#filter-out-form input:text").val(); 
-        filterOutList.push(tag);
-        updateFilterOut(1)
-        if(artistSelected && $("#filter-out-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
+       	if(filterOutList.indexOf(tag)==-1){
+	        filterOutList.push(tag);
+	        updateFilterOut(1)
+	        if(artistSelected && $("#filter-out-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
+        }
         return false;
     });
     
@@ -215,7 +231,7 @@ $(window).load(function() {
 		force
 		.nodes(jsonGraph.nodes)
 		.links(jsonGraph.links)
-		.linkDistance(function(d){return Math.max((200-d.value*200), minEdgeLen);})
+		.linkDistance(function(d){return Math.max((linkDistanceMax-d.value*linkDistanceMax), minEdgeLen);})
 		.start();
 
 		node.call(force.drag);
@@ -270,7 +286,7 @@ $(window).load(function() {
 		force
 			.nodes(updatedJsonGraph.nodes)
 			.links(updatedJsonGraph.links)
-			.linkDistance(function(d){return Math.max((200-d.value*200), minEdgeLen);})
+			.linkDistance(function(d){return Math.max((linkDistanceMax-d.value*linkDistanceMax), minEdgeLen);})
             .start()
             .alpha(.1);
 	}
@@ -385,8 +401,9 @@ $(window).load(function() {
     
     function getSimilarArtistInfo(similarArtists, callback){
         var simArtistData = [];
+        
         for (i in similarArtists){
-            sleep(50);
+            sleep(1);
             lastfm.artist.getInfo({artist: similarArtists[i].name}, {success: function(artInfo){ 
                 getAllTheTags(similarArtists[i].name, function(ttags) {
                     simArtistData.push({name:artInfo.artist.name,
@@ -421,7 +438,10 @@ $(window).load(function() {
                 globalArtistSupp = data1;
                 //Filter the users
                 refilterGraph(name, globalArtistData, globalArtistSupp);
+    
+                svg.selectAll("text.loading").transition().duration(750).attr("opacity", 0);
                 //make a call to the comparison screen!
+                
                 callback();
             });
         }}); //get similar+transition
@@ -459,15 +479,26 @@ $(window).load(function() {
             svg.selectAll("text.tnode").remove();
             drawGraph(jsonGraph1);
         }
-        runListeners();
+        runGraphListeners();
         numDrawnArtists = c;
     }
     
-    function runListeners(){
+    
+    function runGraphListeners(){
+        d3.selectAll("circle.node").on("click", function(node) {
+            updateTagCloud(node.name, tagCloudLimit, firstRun);
+            globalName = node.name;
+            rebuildGraph(node.name, function() {return false;});
+        });//node click
+        
         d3.selectAll("line.link").on("click", function(d) {
                     console.log(d.source.name +"---"+ d.target.name)
                     sendData(d.source.name, d.target.name);
-        })
+        });
+    }
+    
+    
+    function runListeners(){
         //delete filtered items
         svgFilterIn.selectAll("text.tnode").on("click", function (d){
             ind = filterInList.indexOf(d);
@@ -499,11 +530,6 @@ $(window).load(function() {
             return false;
         }); 
         
-        d3.selectAll("circle.node").on("click", function(node) {
-            updateTagCloud(node.name, tagCloudLimit, firstRun);
-            globalName = node.name;
-            rebuildGraph(node.name, function() {return false;});
-        });//node click
 
     }
 
@@ -512,7 +538,8 @@ $(window).load(function() {
       var delim = ",";
       window.location = "layout.html?" + artist1 + delim + artist2;
     }
-
+	
+	runListeners();
 
 	$('#submitter').submit(function() {
         var jsonGraph = {}; 
@@ -521,6 +548,7 @@ $(window).load(function() {
         artistInput = $("input:first").val(); 
         artistSelected = true;
         
+        svg.selectAll("text.loading").transition().duration(550).attr("opacity", 0.75);
         
         //Check for artist correction
 		lastfm.artist.getCorrection({artist: artistInput}, {success: function(newName){			

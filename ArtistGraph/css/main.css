@@ -82,7 +82,6 @@ header .stuts span {
     font-size: 11px;
 }
 .content-body .content-body-inner .artist-display-slider {   
-    text-align: center;
     min-width: 194px;
     min-height: 40px;
     border-bottom: 1px solid #C8C8C8;
@@ -171,4 +170,13 @@ line.link {
 text.tnode {
   font-size: 11px;
 }
+
+text.loading {
+	font-size: 25px;
+	font-weight: bold;
+	cursor: default;
+}
+
+
+
 
