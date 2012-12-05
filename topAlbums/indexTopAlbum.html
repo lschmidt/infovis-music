@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Artist Comparison</title>
 
 <link href="css/main.css" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" />
 <link href="../ArtistGraph/styles.css" rel="stylesheet" type="text/css" />
 <link href="../Sunburst/wheel.css" rel="stylesheet">
 
@@ -125,17 +127,18 @@ function showAlbums(artist1,artist2){
             $('#lastfmTemplateArtists').render(data.topalbums.album)
         );
 	
-    }});
 
-	//var artistName2 = document.forms["inputForm"].elements["artistInput2"].value;
-	 var artistName2 = artist2;
-	 //console.log(artist2);
-	lastfm.artist.getTopAlbums({artist: artist2, limit: 5}, {success: function(data){
 
-        $('#top_artists2').html(
-            $('#lastfmTemplateArtists2').render(data.topalbums.album)
-        );
-
+		//var artistName2 = document.forms["inputForm"].elements["artistInput2"].value;
+		 var artistName2 = artist2;
+		 //console.log(artist2);
+		lastfm.artist.getTopAlbums({artist: artist2, limit: 5}, {success: function(data1){
+	
+	        $('#top_artists2').html(
+	            $('#lastfmTemplateArtists2').render(data1.topalbums.album)
+	        );
+	
+	    }});
     }});
 	}
 	
@@ -261,14 +264,14 @@ function getArtist(artistName, leftOrRight){
 			<div class="centerfootercol" id="centerfootercol1" style="margin-top:0px">Artist Graph
                 <br>
                 <a href="../ArtistGraph/index.html">
-                    <img src="artistGraph.jpg" alt="Double Bar Graph">
+                    <img src="../ArtistGraph/artistGraph.jpg" alt="Double Bar Graph">
                 </a>
             </div>
 			
 			<div class ="centerfootercol" id="centerfootercol3">Top Albums
 			<br>
 				<a href="../topAlbums/indexTopAlbum.html">
-					<img src="topalbums3.png" alt="Top Albums">
+					<img src="topalbumsSmall.jpg" alt="Top Albums">
 				</a>
 			</div>		
         </div>
