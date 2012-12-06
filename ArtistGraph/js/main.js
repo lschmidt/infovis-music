@@ -289,7 +289,7 @@ $(window).load(function() {
 	    svg.selectAll("line.link")
 			.data(updatedJsonGraph.links)
 			.transition()
-			.style("stroke-width", function(d) { return Math.sqrt(30*d.value);})      
+			.style("stroke-width", function(d) { return Math.sqrt(edgeWidth*d.value)+1;})      
 			.duration(500);
 
 	
@@ -415,18 +415,25 @@ $(window).load(function() {
         }
     }
     
+    function inArray(element, array){
+    	for (ind in array){
+    		if(element == array[ind]){return true;}
+    	}
+    	return false;
+    }
+    
     //returns the index of the most popular viable artist
-    function mostPopularArtist(){
+    function mostPopularArtist(drawnInd){
         var maxine = -1;
         var maxind = -1;
         for (ind in globalArtistData){
             if(filterPCount){
-                if(globalArtistData[ind].include && globalArtistData[ind].playcount > maxine){
+                if(inArray(ind, drawnInd) && globalArtistData[ind].include && globalArtistData[ind].playcount > maxine){
                     maxind = ind;
                     maxine = globalArtistData[ind].playcount; 
                 }
             }else{
-                if(globalArtistData[ind].include && globalArtistData[ind].listeners > maxine){
+                if(inArray(ind, drawnInd) && globalArtistData[ind].include && globalArtistData[ind].listeners > maxine){
                     maxind = ind;
                     maxine = globalArtistData[ind].listeners; 
                 }
@@ -436,11 +443,25 @@ $(window).load(function() {
     }
     
     function filterPopularity(){
-        //take out the top 
         for (var i=0; i < filterPopFlag; i++){
-            alert("Dropping " + globalArtistData[mostPopularArtist(globalArtistData)].name)
-            globalArtistData[mostPopularArtist(globalArtistData)].include = 0;
-         } 
+            var mpa = mostPopularArtist(getDrawnIndices());
+        	//alert("Dropping " + globalArtistData[mpa].name)
+        	globalArtistData[mpa].include = 0;
+        } 
+    }
+    
+    function getDrawnIndices(){
+    	var indices = [];
+    	var c = 0
+    	var lenn = globalArtistData.length;
+    	for(var i=0; i < lenn; i++ ){
+    		if(c > numDrawnArtistsCap){break;}
+    		if(globalArtistData[i].include){
+    			indices.push(i);
+    			c = c + 1;
+    		}
+    	}
+    	return indices;
     }
     
     function sleep(ms){
@@ -518,7 +539,7 @@ $(window).load(function() {
         
         if(filterInFlag){filterIn();}
         if(filterOutFlag){filterOut();}
-        if(filterPopFlag){filterPopularity(globalArtistData);}
+        if(filterPopFlag){filterPopularity();}
         listy1.push({"name":name});
         var c = 0;
         for (var i=0, len = globalArtistData.length; i < len; i++){
