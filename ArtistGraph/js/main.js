@@ -21,13 +21,14 @@ $(window).load(function() {
 	var numArtists = 18;
     var numDrawnArtistsCap = 7;
     var numDrawnArtists = 0;
-	var minEdgeLen = 60;
+	var minEdgeLen = 80;
     var firstRun = true;
     var tagCloudLimit = 12;
 	var artistSelected = false;
     var artistInput = ""
     var tagLimit = 50;
-    var linkDistanceMax = 250;
+    var linkDistanceMax = 300;
+    var edgeWidth = 40;
     
     var filterInList = []
     var filterOutList = []
@@ -223,7 +224,7 @@ $(window).load(function() {
 		.enter().append("line")
 		.attr("opacity", 0.8)
 		.attr("class", "link")
-		.style("stroke-width", function(d) { return Math.sqrt(30*d.value); });      
+		.style("stroke-width", function(d) { return Math.sqrt(edgeWidth*d.value)+1; });      
 		
 		var node = svg.selectAll("circle.node")
 		.data(jsonGraph.nodes)
