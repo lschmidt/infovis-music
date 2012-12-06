@@ -4,7 +4,7 @@
 <title>Artist Comparison</title>
 
 <link href="css/main.css" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+
 <link href="../ArtistGraph/styles.css" rel="stylesheet" type="text/css" />
 <link href="../Sunburst/wheel.css" rel="stylesheet">
 
@@ -77,7 +77,7 @@ function graphComparison(artistName, artist2Name)
 function topAlbums(artistName, artist2Name)
 {
 	var div = "#centerfootercol3";
-	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbums3.png' alt='Double Bar Graph'></a>");
+	$(div).html("Top Albums<br><a href='../topAlbums/indexTopAlbum.html?" + encodeURIComponent(artistName) + "," + encodeURIComponent(artist2Name) + "'><img src='topalbumsSmall.jpg' alt='Double Bar Graph'></a>");
 
 }
 function artistGraph(artistName)
@@ -231,7 +231,7 @@ function getArtist(artistName, leftOrRight){
 			<div id="container">	
 		
 				<div class="content-body-inner" id="top_artists" style="float:left;margin-left:220px"></div>
-				<div class="content-body-inner2" id="top_artists2" style="float:left; margin-left:70px"></div>
+				<div class="content-body-inner2" id="top_artists2" style="float:left; margin-left:120px"></div>
 			</div>	
  		</div>
 		
@@ -273,7 +273,7 @@ function getArtist(artistName, leftOrRight){
 				<a href="../topAlbums/indexTopAlbum.html">
 					<img src="topalbumsSmall.jpg" alt="Top Albums">
 				</a>
-			</div>		
+			</div>	
         </div>
  	</body>
 

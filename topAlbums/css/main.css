@@ -19,7 +19,7 @@ header h2{
     font-size:22px;
     font-weight:normal;
     left:50%;
-    margin-left:-400px;
+    margin-left:-100px;
     padding:22px 0;
     position:absolute;
     width:540px;
@@ -79,7 +79,7 @@ header .stuts span {
     overflow: hidden;
     padding: 9px 12px;
     position: relative;
-	margin-left:70px;
+	margin-left:210px;
 	}
 
  #container {

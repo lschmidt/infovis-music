@@ -15,8 +15,8 @@
 header h2{
     font-size:22px;
     font-weight:normal;
-    position:absolute;
-    margin-left: 100px;
+    position:relative;
+    margin-left: -50px;
 }
  #leftcol {
     background-color: #FAFAFA;
@@ -29,8 +29,8 @@ header h2{
     font-size: 20px;
  }
  .clearfix{
-    margin-left: -20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     font-size: 13px;
  }
  #main {
