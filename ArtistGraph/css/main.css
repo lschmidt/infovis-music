@@ -55,6 +55,7 @@ header .stuts span {
     margin: 0 0 15px;
     padding: 10px 10px 5px;
     position: relative;
+    min-height: 600px;
 }
 .content-body h2 {
     display: block;
@@ -68,15 +69,12 @@ header .stuts span {
 }
 .content-body .content-body-inner {
     background-color: #FAFAFA; 
-    border: 1px solid #A6A6A6; 
-    border-bottom: 2px solid #747474;
+    border: 1px solid #A6A6A6;
+    border-bottom: 2px solid #A6A6A6; 
     min-height: 20px;
     max-width: 202px;
     min-width: 200px;
-    float: right;
-    overflow: hidden;
-    padding: 9px 12px;
-    position: relative;
+    float: right;   
 }
 .content-body .content-body-inner p {
     font-size: 11px;
@@ -88,12 +86,13 @@ header .stuts span {
     font-size: 10px;
     margin-left: auto;
     margin-right: auto;
-    width = 200px;  
+    width: 200px;  
 }
 .content-body .content-body-inner .content-filter-cloud {   
     min-width: 194px;
     min-height: 60px;
     border-bottom: 1px solid #C8C8C8;  
+    overflow: hidden;
 }
 .content-body .content-body-inner .content-filter-in {
     font-size: 12px;
@@ -122,14 +121,7 @@ header .stuts span {
     margin-left: 13px;
     
 }
-.content-body .content-body-inner .content-filter-events {
-    border-top: 1px solid #C8C8C8;
-    font-size: 10px;
-    min-width: 200px;
-    min-height: 40px;
-    float: right;
 
-}
 .content-body .content-body-inner .content-filter-pop .filter-pop-form-div input.radiob {
     margin-bottom: 6px;
 }

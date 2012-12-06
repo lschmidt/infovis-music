@@ -18,8 +18,8 @@ $(window).load(function() {
 	var width = 700,
 	height = 500;
 
-	var numArtists = 15;
-    var numDrawnArtistsCap = 4;
+	var numArtists = 18;
+    var numDrawnArtistsCap = 7;
     var numDrawnArtists = 0;
 	var minEdgeLen = 60;
     var firstRun = true;
@@ -81,21 +81,7 @@ $(window).load(function() {
     for (i = 0; (i < data.length); i++) {
         data[i] = decodeURIComponent(data[i]);
     }
-    if(data[0].length > 0){
-        lastfm.artist.getCorrection({artist: data[0]}, {success: function(newName){			
-			if(!((typeof newName.corrections.correction) === "undefined")){
-				globalName = newName.corrections.correction.artist.name;		
-				console.log("Corrected artist to:" + newName.corrections.correction.artist.name);}
-            else{globalName = data[0];}
-        
-            $("input:first").val(globalName); 
-            updateTagCloud(globalName, tagCloudLimit, firstRun);
-                        
-            rebuildGraph(globalName, function (){return false;});
-			}});
-    }
-                        
-                        
+                                            
     //manual tag entry for filter in                       
     $('#filter-in-form').submit(function (){
         var tag = $("#filter-in-form input:text").val(); 
@@ -122,12 +108,18 @@ $(window).load(function() {
         console.log(filterInList)
         if(firstRun){
             svgFilterIn.selectAll('text.tnode')
-            .data(filterInList)
-            .enter().append("text")
-            .text(function(d, i) { return d; })
-            .attr("class", "tnode")
-            .attr("fill", "#1a1a1a")
-            .attr("y", function(d,i){return i*11+10})
+	            .data(filterInList)
+	            .enter().append("text")
+	            .text(function(d, i) { return d; })
+	            .attr("class", "tnode")
+	            .attr("fill", "#1a1a1a")
+	            .attr("y", function(d,i){return i*11+10})
+            //delete filtered items
+		    svgFilterIn.selectAll("text.tnode").on("click", function (d){
+		        ind = filterInList.indexOf(d);
+		        filterInList = filterInList.slice(0,ind).concat(filterInList.slice(ind+1, filterInList.length));
+		        updateFilterIn(0);
+		    });
         }
         else{
             svgFilterIn.selectAll('text.tnode').data(filterInList).exit().remove()
@@ -137,6 +129,8 @@ $(window).load(function() {
                             .text(function(d) { return d; })
                             .attr("y", function(d,i){return i*11+10})
         }
+        console.log($("#filter-in-form input:checkbox"))
+        if(artistSelected && $("#filter-in-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
     }
 
     //manual tag entry for filter out
@@ -154,12 +148,18 @@ $(window).load(function() {
         console.log(filterOutList)
         if(firstRun){
             svgFilterOut.selectAll('text.tnode')
-            .data(filterOutList)
-            .enter().append("text")
-            .text(function(d, i) { return d; })
-            .attr("class", "tnode")
-            .attr("fill", "#1a1a1a")
-            .attr("y", function(d,i){return i*11+10})
+	            .data(filterOutList)
+	            .enter().append("text")
+	            .text(function(d, i) { return d; })
+	            .attr("class", "tnode")
+	            .attr("fill", "#1a1a1a")
+	            .attr("y", function(d,i){return i*11+10});
+           	    //delete filtered items
+		    svgFilterOut.selectAll("text.tnode").on("click", function (d){
+		        ind = filterOutList.indexOf(d);
+		        filterOutList = filterOutList.slice(0,ind).concat(filterOutList.slice(ind+1, filterOutList.length));
+		        updateFilterOut(0);
+		    });
         }
         else{
             svgFilterOut.selectAll('text.tnode').data(filterOutList).exit().remove()
@@ -169,6 +169,7 @@ $(window).load(function() {
                             .text(function(d) { return d; })
                             .attr("y", function(d,i){return i*11+10})
         }
+        if(artistSelected && $("#filter-out-form input:checkbox").attr('checked')){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
     }
 
     
@@ -195,6 +196,21 @@ $(window).load(function() {
         if(artistSelected){refilterGraph(globalName, globalArtistData, globalArtistSupp)}
         return false;
     });
+        
+    if(data[0].length > 0){
+        lastfm.artist.getCorrection({artist: data[0]}, {success: function(newName){			
+			if(!((typeof newName.corrections.correction) === "undefined")){
+				globalName = newName.corrections.correction.artist.name;		
+				console.log("Corrected artist to:" + newName.corrections.correction.artist.name);}
+            else{globalName = data[0];}
+        	artistSelected = true;
+        	
+            $("input:first").val(globalName); 
+            updateTagCloud(globalName, tagCloudLimit, firstRun);
+                        
+            rebuildGraph(globalName, function (){return false;});
+			}});
+    }
     
     
     function drawGraph(jsonGraph){
@@ -295,16 +311,11 @@ $(window).load(function() {
     function updateTagCloud(artistName, tagLimit, initial){
         if(initial){
             lastfm.artist.getTopTags({artist:artistName}, {success: function(topTagData){
-              var tags = topTagData.toptags.tag;
-			
+            var tags = topTagData.toptags.tag;
 			var tagArray = new Array();
-			
-			for(var i=0; i < tags.length; i++)
-			{
-				
+			for(var i=0; i < tags.length; i++){
 				tagArray.push(tags[i].name);
 			}
-			
 			
 			var fill = d3.scale.category20();
 
@@ -326,13 +337,9 @@ $(window).load(function() {
 			
 				var tagArray = new Array();
 				
-				for(var i=0; i < tags.length; i++)
-				{
-					
+				for(var i=0; i < tags.length; i++){
 					tagArray.push(tags[i].name);
 				}
-				
-				
 				var fill = d3.scale.category20();
 
 				d3.layout.cloud().size([200, 200])
@@ -347,96 +354,91 @@ $(window).load(function() {
             }});        
         }
     }
-function draw(words) {
-	
-	var fill = d3.scale.category20();
-	
-	d3.select("#filterCloudDiv").select("svg").remove();
-	
-    d3.select("#filterCloudDiv").append("svg")
-        .attr("width", 200)
-        .attr("height", 200)
-      .append("g")
-        .attr("transform", "translate(90 ,100)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        .style("fill", function(d, i) { return 15; })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
+	function draw(words) {
+		var fill = d3.scale.category20();
+		d3.select("#filterCloudDiv").select("svg").remove();
+	    d3.select("#filterCloudDiv").append("svg")
+	        .attr("width", 200)
+	        .attr("height", 200)
+	      .append("g")
+	        .attr("transform", "translate(90 ,100)")
+	      .selectAll("text")
+	        .data(words)
+	      .enter().append("text")
+	        .style("font-size", function(d) { return d.size + "px"; })
+	        .style("font-family", "Impact")
+	        .style("fill", function(d, i) { return 15; })
+	        .attr("text-anchor", "middle")
+	        .attr("transform", function(d) {
+	          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+	        })
+	        .text(function(d) { return d.text; });
+  	}
     
+    function contains(list, element){
+    	lenn = list.length;
+    	for(var i = 0; i < lenn; i++){
+    		if(list[i].name.toLowerCase() == element.toLowerCase()){return true;}
+    	}
+    	return false;
+    }
     
-    function filterIn(artistData, filterIn){
-         for (art in artistData){
+    function filterIn(){
+         for (art in globalArtistData){
             breakout = 0;
-            for (tag in filterIn) {
-                for(atag in artistData[art].tags){
-                    if(filterIn[tag] == artistData[art].tags[atag].name){
-                        breakout = 1;
-                        break;
-                    }
-                }
+            for (tag in filterInList) {
+            	if(contains(globalArtistData[art].tags, filterInList[tag])){
+                    breakout = 1;
+                    break;
+            	}
                 if(breakout){break;}
             }
-            if(breakout){artistData[art].include = 1;}
-            else{artistData[art].include = 0;}
+            if(breakout){globalArtistData[art].include = 1;}
+            else{globalArtistData[art].include = 0;}
         }
     }
     
-    function filterOut(artistData, filterOut){
-        for (art in artistData){
+    function filterOut(){
+        for (art in globalArtistData){
             breakout = 0;
-            for (tag in filterOut) {
-                for(atag in artistData[art].tags){
-                    if(filterOut[tag] == artistData[art].tags[atag].name){
-                        breakout = 1;
-                        break;
-                    }
-                }
-                if(breakout){break;}
-            }
-            if(breakout){
-                artistData[art].include = 0;
-            }
+            if(globalArtistData[art].include){
+	            for (tag in filterOutList) {
+	                if(contains(globalArtistData[art].tags, filterOutList[tag])){
+	                        breakout = 1;
+	                        globalArtistData[art].include = 0;
+	                        break;
+	                }
+	                if(breakout){break;}
+	           	}
+ 	        }
         }
     }
-    
-    //THIS IS SO BROKEN, SIGH -2:41am
-    function filterEvents(artData, callback){
-        callback(artData);
-    }  
     
     //returns the index of the most popular viable artist
-    function mostPopularArtist(artistData){
+    function mostPopularArtist(){
         var maxine = -1;
         var maxind = -1;
-        for (ind in artistData){
+        for (ind in globalArtistData){
             if(filterPCount){
-                if(artistData[ind].include && artistData[ind].playcount > maxine){
+                if(globalArtistData[ind].include && globalArtistData[ind].playcount > maxine){
                     maxind = ind;
-                    maxine = artistData[ind].playcount; 
+                    maxine = globalArtistData[ind].playcount; 
                 }
             }else{
-                if(artistData[ind].include && artistData[ind].listeners > maxine){
+                if(globalArtistData[ind].include && globalArtistData[ind].listeners > maxine){
                     maxind = ind;
-                    maxine = artistData[ind].listeners; 
+                    maxine = globalArtistData[ind].listeners; 
                 }
             }
         }
         return maxind;
     }
     
-    function filterPopularity(artistData){
+    function filterPopularity(){
         //take out the top 
         for (var i=0; i < filterPopFlag; i++){
-            alert("Dropping " + artistData[mostPopularArtist(artistData)].name)
-            artistData[mostPopularArtist(artistData)].include = 0;
+            alert("Dropping " + globalArtistData[mostPopularArtist(globalArtistData)].name)
+            globalArtistData[mostPopularArtist(globalArtistData)].include = 0;
          } 
     }
     
@@ -452,13 +454,14 @@ function draw(words) {
         }});
     }
     
+    
     function getSimilarArtistInfo(similarArtists, callback){
         var simArtistData = [];
         
         for (i in similarArtists){
             sleep(1);
-            lastfm.artist.getInfo({artist: similarArtists[i].name}, {success: function(artInfo){ 
-                getAllTheTags(similarArtists[i].name, function(ttags) {
+            lastfm.artist.getInfo({artist: similarArtists[i].name}, {success: function(artInfo){
+                getAllTheTags(artInfo.artist.name, function(ttags) {
                     simArtistData.push({name:artInfo.artist.name,
                                          mbid:artInfo.artist.mbid, 
                                          listeners:Number(artInfo.artist.stats.listeners),
@@ -473,14 +476,18 @@ function draw(words) {
         }
     }
     
-    function resetArtistViability(localArtistData){
+    function resetArtistViability(){
         for (i in globalArtistData){
             globalArtistData[i].include = 1;
          }
-        for (j in localArtistData){
-            localArtistData[j].include = 1;
-        }
-        return localArtistData;
+    }
+    
+	function artistIncludes(){
+     	incl = [];
+        for (i in globalArtistData){
+            incl.push(globalArtistData[i].include)
+         }
+         return incl;
     }
     
     function rebuildGraph(name, callback){
@@ -493,8 +500,7 @@ function draw(words) {
                 globalArtistData = artistData2;
                 globalArtistSupp = data1;
                 //Filter the users
-                refilterGraph(name, globalArtistData, globalArtistSupp);
-    
+                refilterGraph(name, globalArtistSupp);
                 svg.selectAll("text.loading").transition().duration(750).attr("opacity", 0);
                 //make a call to the comparison screen!
                 callback();
@@ -502,21 +508,22 @@ function draw(words) {
         }}); //get similar+transition
     }
     
-    function refilterGraph(name, artistData, data1){
+    function refilterGraph(name, data1){
         var listy1 = [];
         var listLink1 = [];
         var jsonGraph1 = {};
         
-        artistData = resetArtistViability(artistData);
-        if(filterInFlag){filterIn(artistData, filterInList);}
-        if(filterOutFlag){filterOut(artistData, filterOutList);}
-        if(filterPopFlag){filterPopularity(artistData);}
+        resetArtistViability();
+        
+        if(filterInFlag){filterIn();}
+        if(filterOutFlag){filterOut();}
+        if(filterPopFlag){filterPopularity(globalArtistData);}
         listy1.push({"name":name});
         var c = 0;
-        for (var i=0, len = artistData.length; i < len; i++){
-            if(artistData[i].include && c < numDrawnArtistsCap){
-                listy1.push({"name":artistData[i].name})
-                listLink1.push({"source":0, "target":c+1, "value":data1.similarartists.artist[i].match})
+        for (var i=0, len = globalArtistData.length; i < len; i++){
+            if(globalArtistData[i].include && c < numDrawnArtistsCap){
+                listy1.push({"name":globalArtistData[i].name})
+                listLink1.push({"source":0, "target":c+1, "value":globalArtistSupp.similarartists.artist[i].match})
                 c += 1;
             }
         }
@@ -547,27 +554,13 @@ function draw(words) {
         });//node click
         
         d3.selectAll("line.link").on("click", function(d) {
-                    console.log(d.source.name +"---"+ d.target.name)
+                   // console.log(d.source.name +"---"+ d.target.name)
                     sendData(d.source.name, d.target.name);
         });
     }
     
     
-    function runListeners(){
-        //delete filtered items
-        svgFilterIn.selectAll("text.tnode").on("click", function (d){
-            ind = filterInList.indexOf(d);
-            filterInList = filterInList.slice(0,ind).concat(filterInList.slice(ind+1, filterInList.length));
-            updateFilterIn(0);
-        });
-        
-        //delete filtered items
-        svgFilterOut.selectAll("text.tnode").on("click", function (d){
-            ind = filterOutList.indexOf(d);
-            filterOutList = filterOutList.slice(0,ind).concat(filterOutList.slice(ind+1, filterOutList.length));
-            updateFilterOut(0);
-        });
-        
+    function runListeners(){        
         //check box activation for filter in    
         $("#filter-in-check input:checkbox").change(function(){                
 //        $("#filter-in-form input:checkbox").change(function(){
@@ -615,6 +608,8 @@ function draw(words) {
             updateTagCloud(artistInput, tagCloudLimit, firstRun);
                         
             rebuildGraph(artistInput, function (){return false;});
+			}, error: function(code, message){
+				alert(message);
 			}});// name correction 
 		return false;
 		});//d3 select button
