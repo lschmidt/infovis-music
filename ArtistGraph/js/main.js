@@ -63,9 +63,7 @@ $(window).load(function() {
             .attr("opacity", 0);
 
 	
-    var svgTagCloud = d3.select("#filterCloudDiv").append("svg")
-                        .attr("width", 200)
-                        .attr("height", 60)
+    var svgTagCloud = d3.select("#filterCloudDiv")
                        // .call(dragAll);
     var svgFilterIn = d3.select("#filterInDivLabels").append("svg")
                         .attr("width", 190)
@@ -297,27 +295,81 @@ $(window).load(function() {
     function updateTagCloud(artistName, tagLimit, initial){
         if(initial){
             lastfm.artist.getTopTags({artist:artistName}, {success: function(topTagData){
-                svgTagCloud.selectAll("text.tnode")
-                    .data(topTagData.toptags.tag.slice(0,tagLimit))
-                    .enter().append("text")
-                    .text(function(d) { return d.name; })
-                    .attr("class", "tnode")
-                    .attr("fill", "#1a1a1a")
-                    .attr("x", function(d,i){return Math.random()*30 +(i%2)*90})
-                    .attr("y", function(d,i){return Math.floor(i/2)*10+8})
+              var tags = topTagData.toptags.tag;
+			
+			var tagArray = new Array();
+			
+			for(var i=0; i < tags.length; i++)
+			{
+				
+				tagArray.push(tags[i].name);
+			}
+			
+			
+			var fill = d3.scale.category20();
+
+			d3.layout.cloud().size([200, 200])
+			  .words(tagArray.map(function(d) {
+				return {text: d, size: 10 + Math.random() * 20};
+			  }))
+			  .rotate(function() { return ~~(Math.random() * 2) * 90; })
+			  .font("Impact")
+			  .fontSize(function(d) { return d.size; })
+			  .on("end", draw)
+			  .start();
+			
             }});
         }else{
             lastfm.artist.getTopTags({artist:artistName}, {success: function(topTagData){
-                svgTagCloud.selectAll("text.tnode")
-                    .data(topTagData.toptags.tag.slice(0,tagLimit))
-                    .text(function(d) { return d.name; })
-                    .attr("class", "tnode")
-                    .attr("fill", "#1a1a1a")
-                    .attr("x", function(d,i){return Math.random()*30+(i%2)*90})
-                    .attr("y", function(d,i){return Math.floor(i/2)*10+8})
+               
+                var tags = topTagData.toptags.tag;
+			
+				var tagArray = new Array();
+				
+				for(var i=0; i < tags.length; i++)
+				{
+					
+					tagArray.push(tags[i].name);
+				}
+				
+				
+				var fill = d3.scale.category20();
+
+				d3.layout.cloud().size([200, 200])
+				  .words(tagArray.map(function(d) {
+					return {text: d, size: 10 + Math.random() * 20};
+				  }))
+				  .rotate(function() { return ~~(Math.random() * 2) * 90; })
+				  .font("Impact")
+				  .fontSize(function(d) { return d.size; })
+				  .on("end", draw)
+				  .start();
             }});        
         }
     }
+function draw(words) {
+	
+	var fill = d3.scale.category20();
+	
+	d3.select("#filterCloudDiv").select("svg").remove();
+	
+    d3.select("#filterCloudDiv").append("svg")
+        .attr("width", 200)
+        .attr("height", 200)
+      .append("g")
+        .attr("transform", "translate(90 ,100)")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return 15; })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
     
     
     function filterIn(artistData, filterIn){
