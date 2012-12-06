@@ -253,7 +253,7 @@ var heightL = 20;
 
 var centerWidth = document.getElementById("centercol").offsetWidth;
 
-var margin = {top: 30, right: 10, bottom: 10, left: 10},
+var margin = {top: 30, right: 20, bottom: 10, left: 10},
     width = centerWidth - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 	
@@ -261,7 +261,7 @@ var margin = {top: 30, right: 10, bottom: 10, left: 10},
 var x0 = Math.max(-d3.min(dataL.slice(0,tagLimit)), d3.max(dataL.slice(0,tagLimit)));
 
 var x = d3.scale.linear()
-    .domain([-125, 125])
+    .domain([-100, 100])
     .range([0, width])
     .nice();
 
